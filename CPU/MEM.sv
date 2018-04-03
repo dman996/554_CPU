@@ -9,7 +9,7 @@
 module MEM(
     input [31:0] alu_out,
     input [31:0] sp_out,
-    input mem_addr_sel
+    input mem_addr_sel,
     output [31:0] mem_addr
 );
 
