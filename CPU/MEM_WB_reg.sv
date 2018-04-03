@@ -14,13 +14,13 @@ module MEM_WB_reg(
     // pipeline reg signals
     input [31:0] alu_out_in,
     input [3:0] reg_dst_in,
-    output [31:0] alu_out_out,
-    output [3:0] reg_dst_out,
+    output reg [31:0] alu_out_out,
+    output reg [3:0] reg_dst_out,
     //control signals
     input reg_wr_in,
     input wb_sel_in,
-    output reg_wr_out,
-    output wb_sel_out
+    output reg reg_wr_out,
+    output reg wb_sel_out
 );
 
 always @(posedge clk, negedge rst_n) begin
@@ -50,5 +50,5 @@ always @(posedge clk, negedge rst_n) begin
     end
 end
 
-endmodule;
+endmodule
 // line for revision control version 1.0
