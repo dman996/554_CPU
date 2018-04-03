@@ -9,13 +9,13 @@
 //  10 = decrement (pop)                          //
 //  11 = error unused value                      //
 //////////////////////////////////////////////////
-module (
+module SP(
     input clk,
     input rst_n,
     
     input [1:0] sp_select,
     output reg [31:0] sp_addr,
-    output err
+    output reg err
 );
 
 always @ (posedge clk, negedge rst_n) begin
@@ -24,7 +24,7 @@ always @ (posedge clk, negedge rst_n) begin
         err = 0;
     end
     else if (sp_select == 2'b00) begin
-        sp_addr = spaddr + 32'h1;
+        sp_addr = sp_addr + 32'h1;
         err = 0;
     end
     else if (sp_select == 2'b01) begin
