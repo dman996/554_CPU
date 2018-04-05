@@ -27,7 +27,7 @@ always @(posedge err)begin
 	if(err) begin
 		$display("Error when processing flags = %B ", flags);
 		$write(" and opcode %B", opcode);
-        $stop
+        $stop;
 	end
 end
 
