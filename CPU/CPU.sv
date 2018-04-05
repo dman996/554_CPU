@@ -115,5 +115,28 @@ module CPU(
 //Hazard Unit 
 
 //Forwarding Unit
-
+    Forwarding_Unit FU(
+        .clk(clk),
+        .rst_n(rst_n),
+        .wb_reg_data(),
+        .mem_reg_data(),
+        .ex_rs1_forward(),
+        .ex_rs2_forward(),
+        .wb_reg_dst(),
+        .mem_reg_dst(),
+        .wb_wr(),
+        .mem_wr(),
+        .rs1_sel(),
+        .rs2_sel(),
+        .ex_rs1(),
+        .ex_rs2()
+    );
+//Branch Logic
+    Branch_Logic BL(
+        .clk(clk),
+        .rst_n(rst_n),
+        .opcode(),
+        .flags(),
+        .pc_branch_sel_out()
+    );
 endmodule
