@@ -5,7 +5,7 @@
 //  flags from the alu and determies if a branch should  //
 //  have been taken                                     //
 /////////////////////////////////////////////////////////
-module Branch_Logic(
+module Branch_logic(
     input clk,
     input rst_n,
     input [4:0] opcode,
