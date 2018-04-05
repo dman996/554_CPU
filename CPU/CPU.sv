@@ -47,13 +47,71 @@ module CPU(
 //EX Module
 
 //EX_MEM_reg Module
+    EX_MEM_reg ex_mem_reg(
+        .clk(clk),
+        .rst_n(rst_n),
+        .stall(),
+        .flush(),
+        // pipeline reg signals
+        .alu_out_in(),
+        .reg_dst_in(),
+        .pc_plus4_in(),
+        .alu_out_out(),
+        .reg_dst_out(),
+        .pc_plus4_out(),
+        //control signals
+        .reg_wr_in(),
+        .wb_sel_in(),
+        .mem_addr_sel_in(),
+        .mem_wr_in(),
+        .sp_select_in(),
+        .reg_wr_out(),
+        .wb_sel_out(),
+        .mem_addr_sel_out(),
+        .mem_wr_out(),
+        .sp_select_out()
+    );
 
 //MEM Module
-
+    MEM mem(
+        .alu_out(),
+        .sp_out(),
+        .mem_addr_sel(),
+        .mem_addr()
+    );
 //MEM_WB_reg Module
-
+    MEM_WB_reg mem_wb_reg(
+        .clk(clk),
+        .rst_n(rst_n),
+        .stall(),
+        .flush(),
+        // pipeline reg signals
+        .alu_out_in(),
+        .reg_dst_in(),
+        .pc_plus4_in(),
+        .alu_out_out(),
+        .reg_dst_out(),
+        .pc_plus4_out(),
+        //control signals
+        .reg_wr_in(),
+        .wb_sel_in(),
+        .reg_wr_out(),
+        .wb_sel_out()
+    );
 //WB Module
-
+    WB wb(
+        .mem_out(), 
+        .alu_out(), 
+        .pc_plus4(), 
+        .reg_dst_in(), 
+        .reg_dest_in(),
+        .wb_sel(), 
+        .reg_wr_in(), 
+        .call(), 
+        .reg_wr_data(), 
+        .reg_dest_out(),
+        .reg_wr_out()
+    );
 //Hazard Unit 
 
 //Forwarding Unit
