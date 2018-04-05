@@ -14,7 +14,7 @@ module MEM(
     output [31:0] rs1_out,
     output [31:0] alu_out_out,
     output [31:0] pc_plus4_out,
-    output [3:0] reg_dest_out,
+    output [3:0] reg_dest_out
 );
 
 assign mem_out_out = mem_out_in;
