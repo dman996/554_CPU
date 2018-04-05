@@ -26,7 +26,8 @@ Branch_logic DUT(
 always @(posedge err)begin
 	if(err) begin
 		$display("Error when processing flags = %B ", flags);
-		$write(" and opcode %B", opcode); 
+		$write(" and opcode %B", opcode);
+        $stop
 	end
 end
 
@@ -44,25 +45,25 @@ initial begin
 	repeat (2) @(posedge clk);
 	if(out != 1)begin
 		err = 1;
-		$stop;
+		//$stop;
 	end
 	flags = 2'b11;
 	repeat (2) @(posedge clk);
 	if(out != 1)begin
 		err = 1;
-		$stop;
+		//$stop;
 	end
 	flags = 2'b01;
 	repeat (2) @(posedge clk);
 	if(out != 0)begin
 		err = 1;
-		$stop;
+		//$stop;
 	end
 	flags = 2'b00;
 	repeat (2) @(posedge clk);
 	if(out != 0)begin
 		err = 1;
-		$stop;
+		//$stop;
 	end
 	//next testing BNE
 	opcode = BNE;
@@ -70,25 +71,25 @@ initial begin
 	repeat (2) @(posedge clk);
 	if(out != 1)begin
 		err = 1;
-		$stop;
+		//$stop;
 	end
 	flags = 2'b00;
 	repeat (2) @(posedge clk);
 	if(out != 1)begin
 		err = 1;
-		$stop;
+		//$stop;
 	end
 	flags = 2'b11;
 	repeat (2) @(posedge clk);
 	if(out != 0)begin
 		err = 1;
-		$stop;
+		//$stop;
 	end
 	flags = 2'b10;
 	repeat (2) @(posedge clk);
 	if(out != 0)begin
 		err = 1;
-		$stop;
+		//$stop;
 	end
 	//next testing BLT
 	opcode = BLT;
@@ -96,25 +97,25 @@ initial begin
 	repeat (2) @(posedge clk);
 	if(out != 1)begin
 		err = 1;
-		$stop;
+		//$stop;
 	end
 	flags = 2'b11;
 	repeat (2) @(posedge clk);
 	if(out != 1)begin
 		err = 1;
-		$stop;
+		//$stop;
 	end
 	flags = 2'b10;
 	repeat (2) @(posedge clk);
 	if(out != 0)begin
 		err = 1;
-		$stop;
+		//$stop;
 	end
 	flags = 2'b00;
 	repeat (2) @(posedge clk);
 	if(out != 0)begin
 		err = 1;
-		$stop;
+		//$stop;
 	end
 	//next testing BGT
 	opcode = BGT;
@@ -122,25 +123,25 @@ initial begin
 	repeat (2) @(posedge clk);
 	if(out != 1)begin
 		err = 1;
-		$stop;
+		//$stop;
 	end
 	flags = 2'b10;
 	repeat (2) @(posedge clk);
 	if(out != 1)begin
 		err = 1;
-		$stop;
+		//$stop;
 	end
 	flags = 2'b01;
 	repeat (2) @(posedge clk);
 	if(out != 0)begin
 		err = 1;
-		$stop;
+		//$stop;
 	end
 	flags = 2'b11;
 	repeat (2) @(posedge clk);
 	if(out != 0)begin
 		err = 1;
-		$stop;
+		//$stop;
 	end
 	$stop;
 end
