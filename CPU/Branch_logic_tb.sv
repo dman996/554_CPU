@@ -39,7 +39,8 @@ initial begin
     clk = 1; 
     rst_n = 0;
     //first testing BEQ
-	opcode = BEQ;
+	$display("TESTING OPCODE BEQ");
+    opcode = BEQ;
     flags = 2'b10;
     repeat (5) @(posedge clk);
     rst_n = 1;
@@ -67,7 +68,8 @@ initial begin
 		//$stop;
 	end
 	//next testing BNE
-	opcode = BNE;
+	$display("TESTING OPCODE BNE");
+    opcode = BNE;
 	flags = 2'b01;
 	repeat (2) @(posedge clk);
 	if(out != 1)begin
@@ -93,7 +95,8 @@ initial begin
 		//$stop;
 	end
 	//next testing BLT
-	opcode = BLT;
+	$display("TESTING OPCODE BLT");
+    opcode = BLT;
 	flags = 2'b01;
 	repeat (2) @(posedge clk);
 	if(out != 1)begin
@@ -119,6 +122,7 @@ initial begin
 		//$stop;
 	end
 	//next testing BGT
+    $display("TESTING OPCODE BGT");
 	opcode = BGT;
 	flags = 2'b00;
 	repeat (2) @(posedge clk);
