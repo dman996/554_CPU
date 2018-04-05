@@ -35,6 +35,7 @@ always begin
     #1 clk = ~clk;
 end
 initial begin
+    err = 0;
     clk = 1; 
     rst_n = 0;
     //first testing BEQ
