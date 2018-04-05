@@ -23,10 +23,10 @@ Branch_logic DUT(
     .pc_branch_sel_out(out)
 );   
 
-always @(posedge err)begin
+always @* begin
 	if(err) begin
 		$display("Error when processing flags = %B ", flags);
-		$write(" and opcode %B", opcode);
+		$display(" and opcode %B", opcode);
         $stop;
 	end
 end
