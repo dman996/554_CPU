@@ -25,8 +25,8 @@ Branch_logic DUT(
 
 always @* begin
 	if(err) begin
-		$write("Error when processing flags = %B ", flags);
-		$display(" and opcode %B", opcode);
+		$write("Error when processing flags: %B ", flags);
+		$display(" and opcode: %B", opcode);
         $stop;
 	end
 end
