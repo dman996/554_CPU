@@ -5,7 +5,7 @@
 //  flags from the alu and determies if a branch should  //
 //  have been taken                                     //
 /////////////////////////////////////////////////////////
-module Branch_Logic(
+module Branch_logic(
     input clk,
     input rst_n,
     input [4:0] opcode,
@@ -22,16 +22,16 @@ always @(posedge clk, negedge rst_n) begin
     if(!rst_n) begin
         pc_branch_sel_out = 0;
     end
-    else if((opcode == BEQ) && (flags == 2'b1x)) begin
+    else if((opcode == BEQ) && (flags ==? 2'b1?)) begin
         pc_branch_sel_out = 1;
     end
-    else if((opcode == BNE) && (flags == 2'b0x)) begin
+    else if((opcode == BNE) && (flags ==? 2'b0?)) begin
         pc_branch_sel_out = 1;
     end
-    else if((opcode == BLT) && (flags == 2'bx1)) begin
+    else if((opcode == BLT) && (flags ==? 2'b?1)) begin
         pc_branch_sel_out = 1;
     end
-    else if((opcode == BGT) && (flags == 2'bx0)) begin
+    else if((opcode == BGT) && (flags ==? 2'b?0)) begin
         pc_branch_sel_out = 1;
     end
     else begin
