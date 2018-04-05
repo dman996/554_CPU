@@ -14,8 +14,10 @@ module EX_MEM_reg(
     // pipeline reg signals
     input [31:0] alu_out_in,
     input [3:0] reg_dst_in,
+    input [31:0] pc_plus4_in,
     output reg [31:0] alu_out_out,
     output reg [3:0] reg_dst_out,
+    output reg [31:0] pc_plus4_out,
     //control signals
     input reg_wr_in,
     input wb_sel_in,
@@ -38,6 +40,7 @@ always @(posedge clk, negedge rst_n) begin
         mem_addr_sel_out = 0;
         mem_wr_out = 0;
         sp_select_out = 0;
+        pc_plus4_out = 0;
     end
     else if(flush) begin
         alu_out_out = 0;
@@ -47,6 +50,7 @@ always @(posedge clk, negedge rst_n) begin
         mem_addr_sel_out = 0;
         mem_wr_out = 0;
         sp_select_out = 0;
+        pc_plus4_out = 0;
     end
     else if(stall) begin
         alu_out_out = alu_out_out;
@@ -56,6 +60,7 @@ always @(posedge clk, negedge rst_n) begin
         mem_addr_sel_out = mem_addr_sel_out;
         mem_wr_out = mem_wr_out;
         sp_select_out = sp_select_out;
+        pc_plus4_out = pc_plus4_out;
     end
     else begin
         alu_out_out = alu_out_in;
@@ -65,6 +70,7 @@ always @(posedge clk, negedge rst_n) begin
         mem_addr_sel_out = mem_addr_sel_in;
         mem_wr_out = mem_wr_in;
         sp_select_out = sp_select_in;
+        pc_plus4_out = pc_plus4_in;
     end
 end
 

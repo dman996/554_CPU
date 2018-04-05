@@ -14,8 +14,10 @@ module MEM_WB_reg(
     // pipeline reg signals
     input [31:0] alu_out_in,
     input [3:0] reg_dst_in,
+    input [31:0] pc_plus4_in,
     output reg [31:0] alu_out_out,
     output reg [3:0] reg_dst_out,
+    output reg [31:0] pc_plus4_out,
     //control signals
     input reg_wr_in,
     input wb_sel_in,
@@ -29,24 +31,28 @@ always @(posedge clk, negedge rst_n) begin
         reg_dst_out = 0;
         reg_wr_out = 0;
         wb_sel_out = 0;
+        pc_plus4_out = 0;
     end
     else if(flush) begin
         alu_out_out = 0;
         reg_dst_out = 0;
         reg_wr_out = 0;
         wb_sel_out = 0;
+        pc_plus4_out = 0;
     end
     else if(stall) begin
         alu_out_out = alu_out_out;
         reg_dst_out = reg_dst_out;
         reg_wr_out = reg_wr_out;
         wb_sel_out = wb_sel_out;
+        pc_plus4_out = pc_plus4_out;
     end
     else begin
         alu_out_out = alu_out_in;
         reg_dst_out = reg_dst_in;
         reg_wr_out = reg_wr_in;
         wb_sel_out = wb_sel_in;
+        pc_plus4_out = pc_plus4_in;
     end
 end
 
