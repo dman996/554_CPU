@@ -1,0 +1,177 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/Users/ECE_STUDENT/Documents/Lab2-VGA
+vdff_en
+Z0 DXx6 sv_std 3 std 0 22 WmjPaeP=7F5?QFXzJ>D[Q2
+Z1 !s110 1523327638
+!i10b 1
+!s100 jMbPYjLZVicK34N56;`KO0
+I3C2HI;6JbP_6GfFT>18>D1
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+!s105 dff_en_sv_unit
+S1
+Z3 dC:/Users/ECE_STUDENT/Documents/554_CPU/CPU
+w1523320970
+8C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/dff_en.sv
+FC:/Users/ECE_STUDENT/Documents/554_CPU/CPU/dff_en.sv
+L0 1
+Z4 OV;L;10.4d;61
+r1
+!s85 0
+31
+Z5 !s108 1523327638.000000
+!s107 C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/dff_en.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/dff_en.sv|
+!i113 1
+Z6 o-work work -sv
+vID
+R0
+R1
+!i10b 1
+!s100 ?eFXE5n_jmAlMT]i8dQO^2
+IG0jiI[cEWG:k=mPQ8zPeH3
+R2
+!s105 ID_sv_unit
+S1
+R3
+w1523327635
+8C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/ID.sv
+FC:/Users/ECE_STUDENT/Documents/554_CPU/CPU/ID.sv
+L0 1
+R4
+r1
+!s85 0
+31
+R5
+!s107 C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/ID.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/ID.sv|
+!i113 1
+R6
+n@i@d
+vIF
+R0
+Z7 !s110 1523327637
+!i10b 1
+!s100 KCZ?DfIM;FZGAZ<38H<ki1
+Im7`zEOWiANYEhVaH9GL;[1
+R2
+!s105 IF_sv_unit
+S1
+R3
+w1523321529
+8C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/IF.sv
+FC:/Users/ECE_STUDENT/Documents/554_CPU/CPU/IF.sv
+L0 1
+R4
+r1
+!s85 0
+31
+Z8 !s108 1523327637.000000
+!s107 C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/IF.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/IF.sv|
+!i113 1
+R6
+n@i@f
+vIF_tb
+R0
+R1
+!i10b 1
+!s100 h]Z3h6n6nLZL>`0LU6RS@3
+In@f8BDG8z76DnOhIQWgcc2
+R2
+!s105 IF_tb_sv_unit
+S1
+R3
+w1523321555
+8C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/IF_tb.sv
+FC:/Users/ECE_STUDENT/Documents/554_CPU/CPU/IF_tb.sv
+L0 1
+R4
+r1
+!s85 0
+31
+R5
+!s107 C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/IF_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/IF_tb.sv|
+!i113 1
+R6
+n@i@f_tb
+vNext_PC_Logic
+R0
+R7
+!i10b 1
+!s100 oZBW9ld2l>89?zDf;P]1<2
+IH_l[^cB4kIEQFNfX;=@Qb1
+R2
+!s105 Next_PC_Logic_sv_unit
+S1
+R3
+w1523240446
+8C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Next_PC_Logic.sv
+FC:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Next_PC_Logic.sv
+L0 1
+R4
+r1
+!s85 0
+31
+R8
+!s107 C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Next_PC_Logic.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Next_PC_Logic.sv|
+!i113 1
+R6
+n@next_@p@c_@logic
+vNext_PC_Logic_tb
+R0
+R1
+!i10b 1
+!s100 oF:5SHfiZTAAm;:c?KQdz0
+IUK^^BiZDh_O6b0BmZY11>1
+R2
+!s105 Next_PC_Logic_tb_sv_unit
+S1
+R3
+w1523320805
+8C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Next_PC_Logic_tb.sv
+FC:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Next_PC_Logic_tb.sv
+L0 1
+R4
+r1
+!s85 0
+31
+R8
+!s107 C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Next_PC_Logic_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Next_PC_Logic_tb.sv|
+!i113 1
+R6
+n@next_@p@c_@logic_tb
+vRegister_File
+R0
+R1
+!i10b 1
+!s100 2mYBXaPb4aUe4e^ROZNJf3
+IMK@mAzChnS<2g3zbed_IX3
+R2
+!s105 Register_File_sv_unit
+S1
+R3
+w1523325728
+8C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Register_File.sv
+FC:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Register_File.sv
+L0 1
+R4
+r1
+!s85 0
+31
+R5
+!s107 C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Register_File.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Register_File.sv|
+!i113 1
+R6
+n@register_@file

@@ -112,10 +112,7 @@ interrupt = 1'b0;
 		
 		// interrupt state
 		S1: begin
-			if (counter == 3'b011) begin
-				interrupt = 1'b1;
-				pc_out = pci;
-			end
+			interrupt = 1'b1;
 		end
 	endcase
 end

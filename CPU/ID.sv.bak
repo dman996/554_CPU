@@ -6,7 +6,7 @@ module ID(
 
 	// from IF_ID Buffer
 	input [31:0] pc_plus_4,
-	input interrupt,
+	input alert,
 	input [31:0] instr,
 
 	// from WB Stage
@@ -19,8 +19,6 @@ module ID(
 	output [3:0] reg_dst_sel,
 	output [31:0] rd1_bypass_out,
 	output [31:0] rd2_bypass_out, 
-	output [31:0] pc_plus_4_out,
-	output interrupt_out
 );
 
 wire [31:0] rd1_out, rd2_out;

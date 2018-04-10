@@ -1,0 +1,43 @@
+C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Next_PC_Logic.sv {1 {vlog -work work -sv -stats=none C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Next_PC_Logic.sv
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module Next_PC_Logic
+
+Top level modules:
+	Next_PC_Logic
+
+} {} {}} C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/dff_en.sv {1 {vlog -work work -sv -stats=none C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/dff_en.sv
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module dff_en
+
+Top level modules:
+	dff_en
+
+} {} {}} C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/IF.sv {1 {vlog -work work -sv -stats=none C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/IF.sv
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module IF
+
+Top level modules:
+	IF
+
+} {} {}} C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Next_PC_Logic_tb.sv {1 {vlog -work work -sv -stats=none C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Next_PC_Logic_tb.sv
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module Next_PC_Logic_tb
+
+Top level modules:
+	Next_PC_Logic_tb
+
+} {} {}} C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Register_File.sv {1 {vlog -work work -sv -stats=none C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/Register_File.sv
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module Register_File
+
+Top level modules:
+	Register_File
+
+} {} {}} C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/IF_tb.sv {1 {vlog -work work -sv -stats=none C:/Users/ECE_STUDENT/Documents/554_CPU/CPU/IF_tb.sv
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module IF_tb
+
+Top level modules:
+	IF_tb
+
+} {} {}}
