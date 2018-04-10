@@ -46,7 +46,7 @@ reg [31:0] a, b;
 reg [4:0] opcode;
 wire [31:0] alu_out;
 wire [1:0] flags;
-wire [2:0] aluOP;
+wire [2:0] aluOp;
 reg err, clk;
 alu DUT(
     .a(a),
@@ -56,7 +56,7 @@ alu DUT(
     .flags(flags)
 );
 
-assign aluOP = DUT.op;
+assign aluOp = DUT.op;
 always @* begin
 	if(err) begin
 		$display("Error when processing opcode: %B ", opcode);
