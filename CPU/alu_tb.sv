@@ -56,7 +56,7 @@ alu DUT(
     .flags(flags)
 );
 
-assign aluOp = DUT.op;
+assign aluOP = DUT.op;
 always @* begin
 	if(err) begin
 		$display("Error when processing opcode: %B ", opcode);
