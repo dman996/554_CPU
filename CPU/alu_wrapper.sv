@@ -54,7 +54,7 @@ localparam NOTA  = 3'b111;
 //regs for testing
 reg [31:0] a_final, b_final, tmp;
 
-alu DUT(
+alu ALU(
     .a(a_final),
     .b(b_final),
     .opcode(opcode),
