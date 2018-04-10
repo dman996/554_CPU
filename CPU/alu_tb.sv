@@ -60,7 +60,8 @@ assign aluOp = DUT.op;
 always @* begin
 	if(err) begin
 		$display("Error when processing opcode: %B ", opcode);
-		//$display(" and opcode: %B", opcode);
+		@(posedge clk);
+        //$display(" and opcode: %B", opcode);
         $stop;
 	end
 end
