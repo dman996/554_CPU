@@ -49,7 +49,7 @@ localparam NOTA  = 3'b111;
 always @(*)begin
     if(opcode==ADD | opcode==ADDI | opcode==LD | opcode==ST)
         aluOP = ADDA;
-    else if(opcode==SUB | opcode==SUBI)
+    else if(opcode==SUB | opcode==SUBI | opcode==CMP)
         aluOP = SUBA;
     else if(opcode==MUL)
         aluOP = MULA;
