@@ -151,7 +151,7 @@ initial begin
 		err = 1;
     $display("opcode to aluOp completed without errors");
     $display("Now testing the add instruction");
-    
+    opcode = ADD; 
     for(a=0; a<32'hffffffff; a = a+1) begin
         for(b=0; b<32'hffffffff; b = b+1) begin
             @(posedge clk);

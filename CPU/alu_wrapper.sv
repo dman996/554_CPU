@@ -54,7 +54,7 @@ localparam NOTA  = 3'b111;
 //regs for testing
 reg [31:0] a_final, b_final, tmp;
 wire [31:0] alu_output;
-assign out = alu_out;
+assign out = alu_output;
 alu ALU(
     .a(a_final),
     .b(b_final),
