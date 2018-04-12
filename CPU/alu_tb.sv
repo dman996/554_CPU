@@ -72,7 +72,8 @@ end
 
 initial begin
     err = 0;
-    clk = 1; 
+    clk = 1;
+    correct = 0;
     //test to see if opcodes are correct
 	$display("TESTING to see if opcode to aluOp is correct");
     opcode =   ADD;   //= 5'b00010;
@@ -150,9 +151,12 @@ initial begin
 		err = 1;
     $display("opcode to aluOp completed without errors");
     $display("Now testing the add instruction");
+    
     for(a=0; a<32'hffffffff; a = a+1) begin
         for(b=0; b<32'hffffffff; b = b+1) begin
+            @(posedge clk);
             if(alu_out != (a+b)) begin
+                correct = a + b;
                 $display("error when adding %H and %H got %H instead of %H",a,b,alu_out,correct);
                 $stop;
             end
