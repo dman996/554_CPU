@@ -2,10 +2,10 @@ module Register_File(
 	input clk,
 	input rst_n,
 
-	input [2:0] rd1,
-	input [2:0] rd2,
+	input [3:0] rd1,
+	input [3:0] rd2,
 
-	input [2:0] wr_dst,
+	input [3:0] wr_dst,
 	input wr,
 	input [31:0] wr_data,
 
@@ -13,7 +13,7 @@ module Register_File(
 	output [31:0] rd2_out
 );
 
-reg [31:0] [0:15] reg_array
+reg [31:0] [0:15] reg_array;
 
 assign rd1_out = reg_array[rd1];
 assign rd2_out = reg_array[rd2];

@@ -34,5 +34,7 @@ assign reg_wr_out = reg_wr_in;
 assign mem_or_alu = (wb_sel) ? mem_out : alu_out;
 assign reg_wr_data = (call) ? pc_plus4 : mem_or_alu;
 
+
+
 endmodule
 //Line for revision controll version 1.0

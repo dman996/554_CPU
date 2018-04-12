@@ -23,7 +23,8 @@ module ID(
 	output interrupt_out,
 	
 	// to IF
-	output [31:0] branch_pc
+	output [31:0] branch_pc,
+	output branch_sel
 );
 
 wire [31:0] rd1_out, rd2_out;
@@ -31,7 +32,6 @@ wire [31:0] rd1_out, rd2_out;
 // control wires
 wire [1:0] imm_sel;
 wire branch_type;
-wire branch_sel;
 wire [1:0] reg_dst_sel;
 
 // Register File

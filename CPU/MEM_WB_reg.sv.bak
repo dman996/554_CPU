@@ -24,7 +24,7 @@ module MEM_WB_reg(
     input call,
     output reg reg_wr_out,
     output reg wb_sel_out,
-    output reg call_out
+    output reg call_out,
 );
 
 always @(posedge clk, negedge rst_n) begin

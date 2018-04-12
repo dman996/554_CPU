@@ -21,14 +21,10 @@ module EX_MEM_reg(
     //control signals
     input reg_wr_in,
     input wb_sel_in,
-    input mem_addr_sel_in,
-    input mem_wr_in,
-    input [1:0] sp_select_in,
+    input call,
     output reg reg_wr_out,
     output reg wb_sel_out,
-    output reg mem_addr_sel_out,
-    output reg mem_wr_out,
-    output reg [1:0] sp_select_out
+    output reg call_out
 );
 
 always @(posedge clk, negedge rst_n) begin
@@ -37,40 +33,32 @@ always @(posedge clk, negedge rst_n) begin
         reg_dst_out = 0;
         reg_wr_out = 0;
         wb_sel_out = 0;
-        mem_addr_sel_out = 0;
-        mem_wr_out = 0;
-        sp_select_out = 0;
         pc_plus4_out = 0;
+	call_out = 0;
     end
     else if(flush) begin
         alu_out_out = 0;
         reg_dst_out = 0;
         reg_wr_out = 0;
         wb_sel_out = 0;
-        mem_addr_sel_out = 0;
-        mem_wr_out = 0;
-        sp_select_out = 0;
         pc_plus4_out = 0;
+	call_out = 0;
     end
     else if(stall) begin
         alu_out_out = alu_out_out;
         reg_dst_out = reg_dst_out;
         reg_wr_out = reg_wr_out;
         wb_sel_out = wb_sel_out;
-        mem_addr_sel_out = mem_addr_sel_out;
-        mem_wr_out = mem_wr_out;
-        sp_select_out = sp_select_out;
         pc_plus4_out = pc_plus4_out;
+	call_out = call_out;
     end
     else begin
         alu_out_out = alu_out_in;
         reg_dst_out = reg_dst_in;
         reg_wr_out = reg_wr_in;
         wb_sel_out = wb_sel_in;
-        mem_addr_sel_out = mem_addr_sel_in;
-        mem_wr_out = mem_wr_in;
-        sp_select_out = sp_select_in;
         pc_plus4_out = pc_plus4_in;
+	call_out = call;
     end
 end
 

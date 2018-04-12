@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////
-// Module Name: MEM_WB_reg                          //
+// Module Name: EX_MEM_reg                          //
 // Author: Dustin R. Wiczek                        //
 // Module Description: This module is for the     //
-//  pipeline register between MEM and WB stages  //
+//  pipeline register between EX and MEM stages  //
 //  and includes signals to flush and stall the //
 //  values that is holds.                      //
 ////////////////////////////////////////////////
-module MEM_WB_reg(
+module EX_MEM_reg(
     input clk,
     input rst_n,
     input stall,
@@ -33,6 +33,9 @@ always @(posedge clk, negedge rst_n) begin
         reg_dst_out = 0;
         reg_wr_out = 0;
         wb_sel_out = 0;
+        mem_addr_sel_out = 0;
+        mem_wr_out = 0;
+        sp_select_out = 0;
         pc_plus4_out = 0;
 	call_out = 0;
     end
@@ -41,6 +44,9 @@ always @(posedge clk, negedge rst_n) begin
         reg_dst_out = 0;
         reg_wr_out = 0;
         wb_sel_out = 0;
+        mem_addr_sel_out = 0;
+        mem_wr_out = 0;
+        sp_select_out = 0;
         pc_plus4_out = 0;
 	call_out = 0;
     end
@@ -49,6 +55,9 @@ always @(posedge clk, negedge rst_n) begin
         reg_dst_out = reg_dst_out;
         reg_wr_out = reg_wr_out;
         wb_sel_out = wb_sel_out;
+        mem_addr_sel_out = mem_addr_sel_out;
+        mem_wr_out = mem_wr_out;
+        sp_select_out = sp_select_out;
         pc_plus4_out = pc_plus4_out;
 	call_out = call_out;
     end
@@ -57,10 +66,13 @@ always @(posedge clk, negedge rst_n) begin
         reg_dst_out = reg_dst_in;
         reg_wr_out = reg_wr_in;
         wb_sel_out = wb_sel_in;
+        mem_addr_sel_out = mem_addr_sel_in;
+        mem_wr_out = mem_wr_in;
+        sp_select_out = sp_select_in;
         pc_plus4_out = pc_plus4_in;
- 	call_out = call;
+	call_out = call;
     end
 end
 
 endmodule
-// line for revision control version 1.0
+// line for revision control version 1.1
