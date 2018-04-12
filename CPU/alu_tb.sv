@@ -177,7 +177,7 @@ initial begin
         end
     $display("Success!");
     $display("Now tesing ADDI instruction");
-    opcode = ADD;
+    opcode = ADDI;
     for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
             a = $random;
             imm = $random;
@@ -189,6 +189,32 @@ initial begin
             end
         end
     $display("Success!");
+    opcode = SUB;
+    for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
+            a = $random;
+            b = $random;
+            @(posedge clk);
+            if(alu_out != (a-b)) begin
+                correct = a - b;
+                $display("error when adding %H and %H got %H instead of %H",a,b,alu_out,correct);
+                $stop;
+            end
+        end
+    $display("Success!");
+    $display("Now tesing ADDI instruction");
+    opcode = SUBI;
+    for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
+            a = $random;
+            imm = $random;
+            @(posedge clk);
+            if(alu_out != (a-imm)) begin
+                correct = a - imm;
+                $display("error when adding %H and %H got %H instead of %H",a,imm,alu_out,correct);
+                $stop;
+            end
+        end
+    $display("Success!");
+    
     $stop;
     
     
