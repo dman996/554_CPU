@@ -45,7 +45,30 @@ module CPU(
 //ID_EX_reg Module
 
 //EX Module
-
+    EX ex(
+    .clk(clk),
+    .rst_n(rst_n),
+    .rs1(),
+    .rs2(),
+    .imm(),
+    .rs1_forward(),
+    .rs2_forward(),
+    .rs1_sel(),
+    .rs2_sel(),
+    .mem_addr(),
+    .mem_data(),
+    .pc_branch_sel(),
+    //control signals
+    .reg_dest_in(),
+    .reg_dest_out(),
+    .opcode(),
+    .cmp(),
+    .returni(),
+    .mem_addr_sel(),
+    .sp_sel(),
+    .mem_wr_in(),
+    .mem_wr_out()
+);
 //EX_MEM_reg Module
     EX_MEM_reg ex_mem_reg(
         .clk(clk),
