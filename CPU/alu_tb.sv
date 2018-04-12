@@ -189,6 +189,7 @@ initial begin
             end
         end
     $display("Success!");
+    $display("Now testing SUB instruction");
     opcode = SUB;
     for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
             a = $random;
@@ -196,12 +197,12 @@ initial begin
             @(posedge clk);
             if(alu_out != (a-b)) begin
                 correct = a - b;
-                $display("error when adding %H and %H got %H instead of %H",a,b,alu_out,correct);
+                $display("error when subbing %H and %H got %H instead of %H",a,b,alu_out,correct);
                 $stop;
             end
         end
     $display("Success!");
-    $display("Now tesing ADDI instruction");
+    $display("Now tesing SUBI instruction");
     opcode = SUBI;
     for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
             a = $random;
@@ -209,11 +210,105 @@ initial begin
             @(posedge clk);
             if(alu_out != (a-imm)) begin
                 correct = a - imm;
-                $display("error when adding %H and %H got %H instead of %H",a,imm,alu_out,correct);
+                $display("error when subbing %H and %H got %H instead of %H",a,imm,alu_out,correct);
                 $stop;
             end
         end
     $display("Success!");
+    $display("Now testing AND instruction");
+    opcode = AND;
+    for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
+            a = $random;
+            b = $random;
+            @(posedge clk);
+            if(alu_out != (a&b)) begin
+                correct = a & b;
+                $display("error when anding %H and %H got %H instead of %H",a,b,alu_out,correct);
+                $stop;
+            end
+        end
+    $display("Success!");
+    $display("Now tesing ANDI instruction");
+    opcode = ANDI;
+    for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
+            a = $random;
+            imm = $random;
+            @(posedge clk);
+            if(alu_out != (a&imm)) begin
+                correct = a & imm;
+                $display("error when anding %H and %H got %H instead of %H",a,imm,alu_out,correct);
+                $stop;
+            end
+        end
+    $display("Success!");
+    $display("Now testing OR instruction");
+    opcode = OR;
+    for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
+            a = $random;
+            b = $random;
+            @(posedge clk);
+            if(alu_out != (a|b)) begin
+                correct = a | b;
+                $display("error when orring %H and %H got %H instead of %H",a,b,alu_out,correct);
+                $stop;
+            end
+        end
+    $display("Success!");
+    $display("Now tesing ORI instruction");
+    opcode = ORI;
+    for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
+            a = $random;
+            imm = $random;
+            @(posedge clk);
+            if(alu_out != (a|imm)) begin
+                correct = a | imm;
+                $display("error when orring %H and %H got %H instead of %H",a,imm,alu_out,correct);
+                $stop;
+            end
+        end
+    $display("Success!");
+    $display("Now testing XOR instruction");
+    opcode = XOR;
+    for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
+            a = $random;
+            b = $random;
+            @(posedge clk);
+            if(alu_out != (a^b)) begin
+                correct = a ^ b;
+                $display("error when xoring %H and %H got %H instead of %H",a,b,alu_out,correct);
+                $stop;
+            end
+        end
+    $display("Success!");
+    $display("Now tesing XORI instruction");
+    opcode = XORI;
+    for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
+            a = $random;
+            imm = $random;
+            @(posedge clk);
+            if(alu_out != (a^imm)) begin
+                correct = a ^ imm;
+                $display("error when xoring %H and %H got %H instead of %H",a,imm,alu_out,correct);
+                $stop;
+            end
+        end
+    $display("Success!");
+    $display("Now tesing NOT instruction");
+    opcode = NOT;
+    for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
+            a = $random;
+            imm = $random;
+            @(posedge clk);
+            if(alu_out != (!a)) begin
+                correct = !a;
+                $display("error when 'not'ing %H and %H got %H instead of %H",a,imm,alu_out,correct);
+                $stop;
+            end
+        end
+    $display("Success!");
+    
+    
+    
     
     $stop;
     
