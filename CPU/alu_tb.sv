@@ -43,6 +43,7 @@ localparam NOTA  = 3'b111;
 
 //regs for testing
 reg [31:0] a, b, correct;
+reg [12:0] cnt; 
 reg [4:0] opcode;
 wire [31:0] alu_out;
 wire [1:0] flags;
@@ -152,7 +153,8 @@ initial begin
     $display("opcode to aluOp completed without errors");
     $display("Now testing the add instruction");
     opcode = ADD; 
-    for(a=0; a<32'hffffffff; a = a+1) begin
+    //big ass loop for no reason
+    /*for(a=0; a<32'hffffffff; a = a+1) begin
         for(b=0; b<32'hffffffff; b = b+1) begin
             @(posedge clk);
             if(alu_out != (a+b)) begin
@@ -161,8 +163,17 @@ initial begin
                 $stop;
             end
         end
-    end
-    
+    end*/
+    for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
+            a = $random;
+            b = $random;
+            @(posedge clk);
+            if(alu_out != (a+b)) begin
+                correct = a + b;
+                $display("error when adding %H and %H got %H instead of %H",a,b,alu_out,correct);
+                $stop;
+            end
+        end
     $stop;
 
 
