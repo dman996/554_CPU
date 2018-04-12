@@ -42,13 +42,13 @@ localparam XORA  = 3'b110;
 localparam NOTA  = 3'b111;
 
 //regs for testing
-reg [31:0] a, b;
+reg [31:0] a, b, correct;
 reg [4:0] opcode;
 wire [31:0] alu_out;
 wire [1:0] flags;
 wire [2:0] aluOp;
 reg err, clk;
-alu DUT(
+alu_wrapper DUT(
     .a(a),
     .b(b),
     .opcode(opcode),
@@ -149,6 +149,16 @@ initial begin
 	if(aluOp != ANDA)
 		err = 1;
     $display("opcode to aluOp completed without errors");
+    $display("Now testing the add instruction");
+    for(a=0; a<32'hffffffff; a = a+1) begin
+        for(b=0; b<32'hffffffff; b = b+1) begin
+            if(alu_out != (a+b)) begin
+                $display("error when adding %H and %H got %H instead of %H",a,b,alu_out,correct);
+                $stop;
+            end
+        end
+    end
+    
     $stop;
 
 
