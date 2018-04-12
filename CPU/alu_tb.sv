@@ -176,7 +176,7 @@ initial begin
             end
         end
     $display("Success!");
-    $display("Now tesing ADDI instruction");
+    $display("Now testing ADDI instruction");
     opcode = ADDI;
     for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
             a = $random;
@@ -202,7 +202,7 @@ initial begin
             end
         end
     $display("Success!");
-    $display("Now tesing SUBI instruction");
+    $display("Now testing SUBI instruction");
     opcode = SUBI;
     for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
             a = $random;
@@ -228,7 +228,7 @@ initial begin
             end
         end
     $display("Success!");
-    $display("Now tesing ANDI instruction");
+    $display("Now testing ANDI instruction");
     opcode = ANDI;
     for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
             a = $random;
@@ -254,7 +254,7 @@ initial begin
             end
         end
     $display("Success!");
-    $display("Now tesing ORI instruction");
+    $display("Now testing ORI instruction");
     opcode = ORI;
     for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
             a = $random;
@@ -280,7 +280,7 @@ initial begin
             end
         end
     $display("Success!");
-    $display("Now tesing XORI instruction");
+    $display("Now testing XORI instruction");
     opcode = XORI;
     for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
             a = $random;
@@ -293,7 +293,7 @@ initial begin
             end
         end
     $display("Success!");
-    $display("Now tesing NOT instruction");
+    $display("Now testing NOT instruction");
     opcode = NOT;
     for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
             a = $random;
@@ -319,7 +319,7 @@ initial begin
             end
         end
     $display("Success!");
-    $display("Now tesing DIV instruction");
+    $display("Now testing DIV instruction");
     opcode = DIV;
     for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
             a = $random;
@@ -343,4 +343,4 @@ initial begin
 
 end
 endmodule
-// line for revision control version 1.1
+// line for revision control version 1.4

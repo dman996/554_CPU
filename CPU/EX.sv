@@ -17,6 +17,7 @@ module EX(
     input rs2_sel,
     output [31:0] mem_addr,
     output [31:0] mem_data,
+    output [31:0] alu_out,
     output pc_branch_sel,
     //control signals
     input [3:0] reg_dest_in,

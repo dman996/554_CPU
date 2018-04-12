@@ -10,6 +10,8 @@ module CPU(
 //We will need to instantiate wires between each pipeline
 //stage and register instantiate the wires coming from each 
 //stage or register in the specified section below
+//the naming scheme will be as follows: "<signal_name>_<pipeline_or_reg_where_i_came_from.
+// ex. alu_out_MEMWB alu_out_EX
 
 //IF Wires
 
@@ -18,19 +20,24 @@ module CPU(
 //ID Wires
 
 //ID_EX_reg wires
-
+wire [31:0] mem_out_IDEX, pc_plus4_IDEX;
+wire reg_wr_MEMWR, wb_sel_IDEX, call_IDEX;
 //EX_wires
-
+wire [31:0] alu_out_IDEX;
+wire [3:0] reg_dst_EX;
 //EX_MEM_reg wires
-
+wire [31:0] alu_out_EXMEM, mem_out_EXMEM, pc_plus4_EXMEM;
+wire [3:0] reg_dst_EXMEM;
+wire reg_wr_MEMWR, wb_sel_EXMEM, call_EXMEM;
 //MEM Wires
 
-//MEM_WB_reg Wires
-
+//MEM_WB_reg Wires (OUT)
+wire [31:0] alu_out_MEMWB, mem_out_MEMWB, pc_plus4_MEMWB;
+wire [3:0] reg_dst_MEMWB;
+wire reg_wr_MEMWR, wb_sel_MEMWB, call_MEMWB;
 //WB Wires
 
 //Hazard Unit Wires
-
 //Forwarding Unit Wires
 
 /////////////////////////////////
@@ -56,10 +63,11 @@ module CPU(
     .rs1_sel(),
     .rs2_sel(),
     .mem_addr(),
-    .mem_data(),
-    .pc_branch_sel(),
+    .mem_data(mem_data_EX),
+    .alu_out(alu_out_EX)
+    .pc_branch_sel(pc_branch_sel_EX),
     //control signals
-    .reg_dest_in(),
+    .reg_dest_in(reg_dst_in),
     .reg_dest_out(),
     .opcode(),
     .cmp(),
@@ -76,23 +84,23 @@ module CPU(
         .stall(),
         .flush(),
         // pipeline reg signals
-        .alu_out_in(),
-        .reg_dst_in(),
-        .pc_plus4_in(),
-        .alu_out_out(),
-        .reg_dst_out(),
-        .pc_plus4_out(),
+        .alu_out_in(alu_out_EX),
+        .reg_dst_in(reg_dst_IDEX),
+        .pc_plus4_in(pc_plus4_IDEX),
+        .alu_out_out(alu_out_EXMEM),
+        .reg_dst_out(reg_dst_EXMEM),
+        .pc_plus4_out(pc_plus4_EXMEM),
         //control signals
-        .reg_wr_in(),
-        .wb_sel_in(),
-        .mem_addr_sel_in(),
-        .mem_wr_in(),
-        .sp_select_in(),
-        .reg_wr_out(),
-        .wb_sel_out(),
-        .mem_addr_sel_out(),
-        .mem_wr_out(),
-        .sp_select_out()
+        .reg_wr_in(reg_wr_IDEX),
+        .wb_sel_in(wb_sel_IDEX),
+        //.mem_addr_sel_in(),
+        //.mem_wr_in(),
+        //.sp_select_in(),
+        .reg_wr_out(reg_wr_EXMEM),
+        .wb_sel_out(wb_sel_EXMEM),
+        //.mem_addr_sel_out(),
+        //.mem_wr_out(),
+        //.sp_select_out()
     );
 
 //MEM Module
@@ -109,31 +117,30 @@ module CPU(
         .stall(),
         .flush(),
         // pipeline reg signals
-        .alu_out_in(),
-        .reg_dst_in(),
-        .pc_plus4_in(),
-        .alu_out_out(),
-        .reg_dst_out(),
-        .pc_plus4_out(),
+        .alu_out_in(alu_out_EXMEM),
+        .reg_dst_in(reg_dst_EXMEM),
+        .pc_plus4_in(pc_plus4_EXMEM),
+        .alu_out_out(alu_out_MEMWB),
+        .reg_dst_out(reg_dst_MEMWB),
+        .pc_plus4_out(pc_plus4_MEMWB),
         //control signals
-        .reg_wr_in(),
-        .wb_sel_in(),
-        .reg_wr_out(),
-        .wb_sel_out()
+        .reg_wr_in(reg_wr_EXMEM),
+        .wb_sel_in(wb_sel_EXMEM),
+        .reg_wr_out(reg_wr_MEMWB),
+        .wb_sel_out(wb_sel_MEMWB)
     );
 //WB Module
     WB wb(
-        .mem_out(), 
-        .alu_out(), 
-        .pc_plus4(), 
-        .reg_dst_in(), 
-        .reg_dest_in(),
-        .wb_sel(), 
-        .reg_wr_in(), 
-        .call(), 
-        .reg_wr_data(), 
-        .reg_dest_out(),
-        .reg_wr_out()
+        .mem_out(mem_out_MEMWB), 
+        .alu_out(alu_out_MEMWB), 
+        .pc_plus4(pc_plus4_MEMWB), 
+        .reg_dst_in(reg_dst_MEMWB), 
+        .wb_sel(wb_sel_MEMWB), 
+        .reg_wr_in(reg_wr_MEMWB), 
+        .call(call_MEMWB), 
+        .reg_wr_data(reg_wr_data_WB), 
+        .reg_dest_out(reg_dst_WB),
+        .reg_wr_out(reg_wr_WB)
     );
 //Hazard Unit 
 
