@@ -42,7 +42,7 @@ localparam XORA  = 3'b110;
 localparam NOTA  = 3'b111;
 
 //regs for testing
-reg [31:0] a, b, correct;
+reg [31:0] a, b, imm, correct;
 reg [12:0] cnt; 
 reg [4:0] opcode;
 wire [31:0] alu_out;
@@ -52,6 +52,7 @@ reg err, clk;
 alu_wrapper DUT(
     .a(a),
     .b(b),
+    .imm(imm),
     .opcode(opcode),
     .out(alu_out),
     .flags(flags)
@@ -174,7 +175,23 @@ initial begin
                 $stop;
             end
         end
+    $display("Success!");
+    $display("Now tesing ADDI instruction");
+    opcode = ADD;
+    for(cnt=0; cnt<32'hfff; cnt = cnt+1) begin
+            a = $random;
+            imm = $random;
+            @(posedge clk);
+            if(alu_out != (a+imm)) begin
+                correct = a + imm;
+                $display("error when adding %H and %H got %H instead of %H",a,imm,alu_out,correct);
+                $stop;
+            end
+        end
+    $display("Success!");
     $stop;
+    
+    
 
 
 end
