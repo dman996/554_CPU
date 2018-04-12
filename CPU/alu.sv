@@ -53,7 +53,8 @@ localparam NOTA  = 3'b111;
 wire [2:0] op;
 
 opcode_to_aluOP decoder(.opcode(opcode), .aluOP(op));
-
+assign flags[1] = (alu_out == 0) ? 1:0;
+assign flags[0] = (alu_out < 0) ? 1:0;
 always @(*) begin
     if(op==ADDA) begin
         alu_out = a + b;
