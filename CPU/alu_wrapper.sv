@@ -10,7 +10,7 @@ module alu_wrapper(
     input [31:0] b,
     input [31:0] imm,
     input [4:0] opcode,
-    output [31:0] alu_out,
+    output [31:0] out,
     output [1:0] flags
 );
 localparam ADD  = 5'b00010;
@@ -53,12 +53,13 @@ localparam NOTA  = 3'b111;
 
 //regs for testing
 reg [31:0] a_final, b_final, tmp;
-
+wire [31:0] alu_output;
+assign out = alu_out;
 alu ALU(
     .a(a_final),
     .b(b_final),
     .opcode(opcode),
-    .alu_out(alu_out),
+    .alu_out(alu_output),
     .flags(flags)
 );
 always @(*) begin

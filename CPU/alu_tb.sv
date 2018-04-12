@@ -52,7 +52,7 @@ alu_wrapper DUT(
     .a(a),
     .b(b),
     .opcode(opcode),
-    .alu_out(alu_out),
+    .out(alu_out),
     .flags(flags)
 );
 
