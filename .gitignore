@@ -1,0 +1,5 @@
+CPU/work/
+*.sv.bak
+*.v.bak
+*.mpf
+*.cr.mti
