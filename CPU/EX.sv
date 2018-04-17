@@ -11,24 +11,31 @@ module EX(
     input [31:0] rs1,
     input [31:0] rs2,
     input [31:0] imm,
+    input [3:0] reg_dest_in,
+    output [3:0] reg_dest_out,
+    output [31:0] mem_addr,
+    output [31:0] mem_data,
+    output [31:0] alu_out,
+    // from forwarding unit
     input [31:0] rs1_forward,
     input [31:0] rs2_forward,
     input rs1_sel,
     input rs2_sel,
-    output [31:0] mem_addr,
-    output [31:0] mem_data,
-    output [31:0] alu_out,
     output pc_branch_sel,
     //control signals
-    input [3:0] reg_dest_in,
-    output [3:0] reg_dest_out,
     input [4:0] opcode,
     input cmp,
     input returni,
     input mem_addr_sel,
     input [1:0] sp_sel,
     input mem_wr_in,
-    output mem_wr_out
+    input wb_sel_in,
+    input reg_wr_in,
+    input call_in,
+    output mem_wr_out,
+    output wb_sel_out,
+    output reg_wr_out,
+    output call_out
 );
 //wires
 wire [31:0] alu_out, sp_addr, fwd_mux_1, fwd_mux_2;
@@ -58,7 +65,7 @@ SP sp(
     .err()
 );
 
-assign mem_addr = (mem_addr_sel) ? alu_out:sp_addr;
+assign mem_addr = (mem_addr_sel) ? sp_addr:alu_out;
 assign mem_data = fwd_mux_1;
 assign fwd_mux_1 = (rs1_sel) ? rs1_forward:rs1;
 assign fwd_mux_2 = (rs2_sel) ? rs2_forward:rs2;

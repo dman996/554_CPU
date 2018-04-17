@@ -21,7 +21,16 @@ module ID(
 	output [31:0] rd2_bypass_out, 
 	output [31:0] pc_plus_4_out,
 	output interrupt_out,
-	
+	output [4:0] opcode_out,
+   	output cmp_out,
+    	output returni_out,
+    	output mem_addr_sel_out,
+    	output [1:0] sp_sel_out,
+    	output mem_wr_out,
+    	output wb_sel_out,
+    	output reg_wr_out,
+    	output call_out,  
+ 
 	// to IF
 	output [31:0] branch_pc,
 	output branch_sel
