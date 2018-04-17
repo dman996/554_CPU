@@ -13,10 +13,8 @@ module MEM(
     // control signals
     input reg_wr,
     input wb_sel,
-    input call,
     output reg_wr_out,
     output wb_sel_out,
-    output call_out,
 
     output [31:0] mem_out_out,
     output [31:0] alu_out_out,
@@ -30,7 +28,6 @@ assign pc_plus4_out = pc_plus4_in;
 assign reg_dest_out = reg_dest_in;
 assign reg_wr_out = reg_wr;
 assign wb_sel_out = wb_sel;
-assign call_out = call;
 
 endmodule
 //Line for revision controll version 1.0

@@ -31,11 +31,9 @@ module EX(
     input mem_wr_in,
     input wb_sel_in,
     input reg_wr_in,
-    input call_in,
     output mem_wr_out,
     output wb_sel_out,
-    output reg_wr_out,
-    output call_out
+    output reg_wr_out
 );
 //wires
 wire [31:0] sp_addr, fwd_mux_1, fwd_mux_2;
