@@ -4,7 +4,15 @@ module Control_Unit(
 	output reg [1:0] imm_sel,
 	output reg branch_type,
 	output reg branch_sel,
-	output reg [1:0] reg_dst_sel
+	output reg [1:0] reg_dst_sel,
+   	output reg cmp,
+    	output reg returni,
+    	output reg mem_addr_sel,
+    	output reg [1:0] sp_sel,
+    	output reg mem_wr,
+    	output reg wb_sel,
+    	output reg reg_wr,
+    	output reg call
 );
 
 always_comb begin
@@ -14,6 +22,14 @@ imm_sel = 2'b00;
 branch_type = 1'b0;
 branch_sel = 1'b0;
 reg_dst_sel = 2'b00;
+cmp = 1'b0;
+returni = 1'b0;
+mem_addr_sel = 1'b0;
+sp_sel = 2'b00;
+mem_wr = 1'b0;
+wb_sel = 1'b0;
+reg_wr = 1'b0;
+call = 1'b0;
 
 	case(opcode)
 		// nop
@@ -22,6 +38,14 @@ reg_dst_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
 			reg_dst_sel = 2'b00;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b0;
+			call = 1'b0;
 		end
 
 		// pop
@@ -29,7 +53,15 @@ reg_dst_sel = 2'b00;
 			imm_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
-			reg_dst_sel = 2'b00;
+			reg_dst_sel = 2'b10;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b1;
+			sp_sel = 2'b10;
+			mem_wr = 1'b0;
+			wb_sel = 1'b1;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// add
@@ -37,7 +69,15 @@ reg_dst_sel = 2'b00;
 			imm_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
-			reg_dst_sel = 2'b00;
+			reg_dst_sel = 2'b10;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// addi
@@ -45,7 +85,15 @@ reg_dst_sel = 2'b00;
 			imm_sel = 2'b01;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
-			reg_dst_sel = 2'b00;
+			reg_dst_sel = 2'b01;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// sub
@@ -53,7 +101,15 @@ reg_dst_sel = 2'b00;
 			imm_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
-			reg_dst_sel = 2'b00;
+			reg_dst_sel = 2'b10;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// subi
@@ -61,7 +117,15 @@ reg_dst_sel = 2'b00;
 			imm_sel = 2'b01;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
-			reg_dst_sel = 2'b00;
+			reg_dst_sel = 2'b01;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// mul
@@ -69,7 +133,15 @@ reg_dst_sel = 2'b00;
 			imm_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
-			reg_dst_sel = 2'b00;
+			reg_dst_sel = 2'b10;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// moveh
@@ -78,6 +150,14 @@ reg_dst_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
 			reg_dst_sel = 2'b00;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// div
@@ -85,7 +165,15 @@ reg_dst_sel = 2'b00;
 			imm_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
-			reg_dst_sel = 2'b00;
+			reg_dst_sel = 2'b10;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// push
@@ -94,6 +182,14 @@ reg_dst_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
 			reg_dst_sel = 2'b00;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b1;
+			sp_sel = 2'b01;
+			mem_wr = 1'b1;
+			wb_sel = 1'b0;
+			reg_wr = 1'b0;
+			call = 1'b0;
 		end
 
 		// and
@@ -101,7 +197,15 @@ reg_dst_sel = 2'b00;
 			imm_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
-			reg_dst_sel = 2'b00;
+			reg_dst_sel = 2'b10;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// andi
@@ -109,7 +213,15 @@ reg_dst_sel = 2'b00;
 			imm_sel = 2'b01;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
-			reg_dst_sel = 2'b00;
+			reg_dst_sel = 2'b01;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// or
@@ -117,7 +229,15 @@ reg_dst_sel = 2'b00;
 			imm_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
-			reg_dst_sel = 2'b00;
+			reg_dst_sel = 2'b10;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// ori
@@ -125,7 +245,15 @@ reg_dst_sel = 2'b00;
 			imm_sel = 2'b01;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
-			reg_dst_sel = 2'b00;
+			reg_dst_sel = 2'b01;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// not
@@ -133,7 +261,15 @@ reg_dst_sel = 2'b00;
 			imm_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
-			reg_dst_sel = 2'b00;
+			reg_dst_sel = 2'b01;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// xor
@@ -141,7 +277,15 @@ reg_dst_sel = 2'b00;
 			imm_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
-			reg_dst_sel = 2'b00;
+			reg_dst_sel = 2'b10;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// xori
@@ -149,7 +293,15 @@ reg_dst_sel = 2'b00;
 			imm_sel = 2'b01;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
-			reg_dst_sel = 2'b00;
+			reg_dst_sel = 2'b01;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// cmp
@@ -158,70 +310,142 @@ reg_dst_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
 			reg_dst_sel = 2'b00;
+			cmp = 1'b1;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b0;
+			call = 1'b0;
 		end
 
 		// beq
 		5'b10011: begin
 			imm_sel = 2'b10;
-			branch_type = 1'b0;
-			branch_sel = 1'b0;
+			branch_type = 1'b1;
+			branch_sel = 1'b1;
 			reg_dst_sel = 2'b00;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b0;
+			call = 1'b0;
 		end
 
 		// blt
 		5'b10100: begin
 			imm_sel = 2'b10;
-			branch_type = 1'b0;
-			branch_sel = 1'b0;
+			branch_type = 1'b1;
+			branch_sel = 1'b1;
 			reg_dst_sel = 2'b00;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b0;
+			call = 1'b0;
 		end
 
 		// bgt
 		5'b10101: begin
 			imm_sel = 2'b10;
-			branch_type = 1'b0;
-			branch_sel = 1'b0;
+			branch_type = 1'b1;
+			branch_sel = 1'b1;
 			reg_dst_sel = 2'b00;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b0;
+			call = 1'b0;
 		end
 
 		// bne
 		5'b10110: begin
 			imm_sel = 2'b10;
-			branch_type = 1'b0;
-			branch_sel = 1'b0;
+			branch_type = 1'b1;
+			branch_sel = 1'b1;
 			reg_dst_sel = 2'b00;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b0;
+			call = 1'b0;
 		end
 
 		// jump
 		5'b10111: begin
 			imm_sel = 2'b10;
 			branch_type = 1'b0;
-			branch_sel = 1'b0;
+			branch_sel = 1'b1;
 			reg_dst_sel = 2'b00;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b0;
+			call = 1'b0;
 		end
 
-		// jumpreg
+		// jumprel
 		5'b11000: begin
 			imm_sel = 2'b10;
-			branch_type = 1'b0;
-			branch_sel = 1'b0;
+			branch_type = 1'b1;
+			branch_sel = 1'b1;
 			reg_dst_sel = 2'b00;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b0;
+			call = 1'b0;
 		end
 
 		// call
 		5'b11001: begin
 			imm_sel = 2'b00;
-			branch_type = 1'b0;
-			branch_sel = 1'b0;
+			branch_type = 1'b1;
+			branch_sel = 1'b1;
 			reg_dst_sel = 2'b00;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b1;
+			call = 1'b1;
 		end
 
 		// return
 		5'b11010: begin
 			imm_sel = 2'b00;
 			branch_type = 1'b0;
-			branch_sel = 1'b0;
+			branch_sel = 1'b1;
 			reg_dst_sel = 2'b00;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b0;
+			call = 1'b0;
 		end
 
 		// returni
@@ -230,6 +454,14 @@ reg_dst_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
 			reg_dst_sel = 2'b00;
+			cmp = 1'b0;
+			returni = 1'b1;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b0;
+			call = 1'b0;
 		end
 
 		// store
@@ -238,6 +470,14 @@ reg_dst_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
 			reg_dst_sel = 2'b00;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b1;
+			wb_sel = 1'b0;
+			reg_wr = 1'b0;
+			call = 1'b0;
 		end
 
 		// load
@@ -245,7 +485,15 @@ reg_dst_sel = 2'b00;
 			imm_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
-			reg_dst_sel = 2'b00;
+			reg_dst_sel = 2'b01;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b1;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// movel
@@ -254,6 +502,14 @@ reg_dst_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
 			reg_dst_sel = 2'b00;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b1;
+			call = 1'b0;
 		end
 
 		// halt
@@ -262,6 +518,14 @@ reg_dst_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;
 			reg_dst_sel = 2'b00;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b0;
+			call = 1'b0;
 		end
 	endcase
 end
