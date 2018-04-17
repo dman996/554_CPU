@@ -21,7 +21,6 @@ module ID(
 	output [31:0] rd2_bypass_out, 
 	output [31:0] pc_plus_4_out,
 	output interrupt_out,
-	output [4:0] opcode_out,
    	output cmp_out,
     	output returni_out,
     	output mem_addr_sel_out,
