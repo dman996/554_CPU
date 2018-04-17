@@ -12,9 +12,11 @@ module IF_ID_reg(
 
     // pipeline reg signals
     input interrupt,
+    input interrupt_mask,
     input [31:0] pc_plus_4,
     input [31:0] instr,
     output reg interrupt_out,
+    output reg interrupt_mask_out,
     output reg [31:0] pc_plus_4_out,
     output reg [31:0] instr_out
 );
@@ -24,21 +26,25 @@ always @(posedge clk, negedge rst_n) begin
         interrupt_out = 1'd0;
 	pc_plus_4_out = 32'd0;
 	instr_out = 32'd0;
+	interrupt_mask_out = 1'd0;
     end
     else if(flush) begin
         interrupt_out = 1'd0;
 	pc_plus_4_out = 32'd0;
 	instr_out = 32'd0;
+	interrupt_mask_out = 1'd0;
     end
     else if(stall) begin
         interrupt_out = interrupt_out;
 	pc_plus_4_out = pc_plus_4_out;
 	instr_out = instr_out;
+	interrupt_mask_out = interrupt_mask_out;
     end
     else begin
         interrupt_out = interrupt;
 	pc_plus_4_out = pc_plus_4;
 	instr_out = instr;
+	interrupt_mask_out = interrupt_mask;
     end
 end
 
