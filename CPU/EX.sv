@@ -38,7 +38,7 @@ module EX(
     output call_out
 );
 //wires
-wire [31:0] alu_out, sp_addr, fwd_mux_1, fwd_mux_2;
+wire [31:0] sp_addr, fwd_mux_1, fwd_mux_2;
 wire [1:0] flags;
 reg [1:0] flags_ff, flags_bak;
 
