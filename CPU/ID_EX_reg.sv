@@ -4,7 +4,7 @@
 // Module Description: Pipeline reg between       //
 // the ID and EX stages                         //
 ////////////////////////////////////////////////
-module MEM_WB_reg(
+module ID_EX_reg(
     input clk,
     input rst_n,
     input stall,
