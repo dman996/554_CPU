@@ -24,10 +24,14 @@ always @ (posedge clk, negedge rst_n) begin
         err = 0;
     end
     else if (sp_select == 2'b00) begin
-        sp_addr = sp_addr + 32'h1;
+        sp_addr = sp_addr;
         err = 0;
     end
     else if (sp_select == 2'b01) begin
+        sp_addr = sp_addr + 32'h1;
+        err = 0;
+    end
+    else if (sp_select == 2'b10) begin
         sp_addr = sp_addr - 32'h1;
         err = 0;
     end
