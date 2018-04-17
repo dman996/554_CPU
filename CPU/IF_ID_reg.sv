@@ -4,7 +4,7 @@
 // Module Description: Pipeline reg between       //
 // the IF and ID stages                         //
 ////////////////////////////////////////////////
-module MEM_WB_reg(
+module IF_ID_reg(
     input clk,
     input rst_n,
     input stall,
@@ -17,9 +17,6 @@ module MEM_WB_reg(
     output reg interrupt_out,
     output reg [31:0] pc_plus_4_out,
     output reg [31:0] instr_out
-
-    //control signals
-    //none for this stage
 );
 
 always @(posedge clk, negedge rst_n) begin
