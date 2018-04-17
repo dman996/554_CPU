@@ -2,4 +2,5 @@ CPU/work/
 *.sv.bak
 *.v.bak
 *.wlf
+*.mpf
 *.cr.mti
