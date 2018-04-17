@@ -4,14 +4,13 @@ reg  clk, rst_n;
 reg stall, branch_predict, pcr_take, pci_take, branch_undo, alert;
 reg [31:0] branch_pc, pc_not_taken, pcr;
 
-wire interrupt;
+wire interrupt, interrupt_mask;
 wire [31:0] mem_addr, pc_plus_4;
 
 IF DUT(
 	.clk(clk),
 	.rst_n(rst_n),
 	.alert(alert),
-	.interrupt_mask(1'b0),
 	.stall(stall),
 	.branch_predict(branch_predict),
 	.pcr_take(pcr_take),
@@ -22,7 +21,8 @@ IF DUT(
 	.pcr(pcr),
 	.mem_addr(mem_addr),
 	.pc_plus_4(pc_plus_4),
-	.interrupt(interrupt)
+	.interrupt(interrupt),
+	.interrupt_mask(interrupt_mask)
 );
 
 always #5 clk = !clk;
@@ -78,6 +78,10 @@ initial begin
 	alert = 1'b0;
 
 	// wait it out
+	#20;
+	pci_take = 1'b1;
+	#10;
+	pci_take = 1'b0;
 	#100;
 	$finish;
 end

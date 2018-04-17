@@ -5,7 +5,6 @@ module IF (
 	
 	// select signals
 	input alert,
-	input interrupt_mask,
 	input stall,
 	input branch_predict,
 	input pcr_take,
@@ -22,7 +21,8 @@ module IF (
 	
 	// IF/ID buffer interface
 	output [31:0] pc_plus_4,
-	output interrupt
+	output interrupt,
+	output reg interrupt_mask
 	
 );
 
@@ -67,6 +67,16 @@ dff_en pc_ff(
 	.d(pc_in),
 	.q(pc_out)
 );
+
+// Interrupt Mask
+always @(posedge clk, negedge rst_n) begin
+	if (!rst_n)
+		interrupt_mask <= 1'b0;
+	else if (pci_take)
+		interrupt_mask <= 1'b0;
+	else if (alert)
+		interrupt_mask <= 1'b1;
+end
 
 // PC + 4 Adder
 assign pc_plus_4 = pc_out + 3'd4;
