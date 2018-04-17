@@ -4,8 +4,20 @@
 //                                               //
 //////////////////////////////////////////////////
 module CPU(
-    .clk(clk),
-    .rst_n(rst_n)
+
+    // global clock and reset
+    input clk,
+    input rst_n,
+
+    // interrupt from timer
+    input alert,
+
+    // memory controller signals
+    input [31:0] mem_rd_data,
+    output [31:0] mem_wr_data,
+    output [31:0] mem_addr,
+    output mem_wr
+
 );
 //We will need to instantiate wires between each pipeline
 //stage and register instantiate the wires coming from each 
@@ -64,7 +76,7 @@ wire reg_wr_MEMWR, wb_sel_MEMWB, call_MEMWB;
     .rs2_sel(),
     .mem_addr(),
     .mem_data(mem_data_EX),
-    .alu_out(alu_out_EX)
+    .alu_out(alu_out_EX),
     .pc_branch_sel(pc_branch_sel_EX),
     //control signals
     .reg_dest_in(reg_dst_in),
@@ -97,7 +109,7 @@ wire reg_wr_MEMWR, wb_sel_MEMWB, call_MEMWB;
         //.mem_wr_in(),
         //.sp_select_in(),
         .reg_wr_out(reg_wr_EXMEM),
-        .wb_sel_out(wb_sel_EXMEM),
+        .wb_sel_out(wb_sel_EXMEM)
         //.mem_addr_sel_out(),
         //.mem_wr_out(),
         //.sp_select_out()
