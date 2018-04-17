@@ -13,16 +13,23 @@ module CPU(
     input alert,
 
     // memory controller signals
+    input [31:0] mem_instr_data,
     input [31:0] mem_rd_data,
     output [31:0] mem_wr_data,
     output [31:0] mem_addr,
+    output [31:0] mem_instr_addr,
     output mem_wr
 
 );
+
+/////////////////////////////////////////////////////////
+//         Instantiate CPU Wires here                  //
+/////////////////////////////////////////////////////////
+
 //We will need to instantiate wires between each pipeline
 //stage and register instantiate the wires coming from each 
 //stage or register in the specified section below
-//the naming scheme will be as follows: "<signal_name>_<pipeline_or_reg_where_i_came_from.
+//the naming scheme will be as follows: "<signal_name>_<pipeline_or_reg_where_it_came_from.
 // ex. alu_out_MEMWB alu_out_EX
 
 //IF Wires
@@ -33,64 +40,183 @@ module CPU(
 
 //ID_EX_reg wires
 wire [31:0] mem_out_IDEX, pc_plus4_IDEX;
-wire reg_wr_MEMWR, wb_sel_IDEX, call_IDEX;
+wire reg_wr_IDEX, wb_sel_IDEX, call_IDEX;
 //EX_wires
 wire [31:0] alu_out_IDEX;
 wire [3:0] reg_dst_EX;
 //EX_MEM_reg wires
 wire [31:0] alu_out_EXMEM, mem_out_EXMEM, pc_plus4_EXMEM;
 wire [3:0] reg_dst_EXMEM;
-wire reg_wr_MEMWR, wb_sel_EXMEM, call_EXMEM;
+wire reg_wr_EXMEM, wb_sel_EXMEM, call_EXMEM;
 //MEM Wires
 
 //MEM_WB_reg Wires (OUT)
 wire [31:0] alu_out_MEMWB, mem_out_MEMWB, pc_plus4_MEMWB;
 wire [3:0] reg_dst_MEMWB;
-wire reg_wr_MEMWR, wb_sel_MEMWB, call_MEMWB;
+wire reg_wr_MEMWB, wb_sel_MEMWB, call_MEMWB;
 //WB Wires
 
 //Hazard Unit Wires
 //Forwarding Unit Wires
 
-/////////////////////////////////
-//Instantiate CPU Modules here//
-///////////////////////////////
+/////////////////////////////////////////////////////////
+//         Instantiate CPU Modules here                //
+/////////////////////////////////////////////////////////
+
 //IF Module
+IF iFetch(
+	// global signals
+	.clk(clk),
+	.rst_n(rst_n),
+	
+	// select signals
+	.alert(alert),
+	.interrupt_mask(),
+	.stall(),
+	.branch_predict(),
+	.pcr_take(),
+	.pci_take(),
+	.branch_undo(),
+
+	// pc values
+	.branch_pc(),
+	.pc_not_taken(),
+	.pcr(),
+	
+	// mem controller interface
+	.mem_addr(mem_instr_addr),
+	
+	// IF/ID buffer interface
+	.pc_plus_4(),
+	.interrupt()
+);
 
 //IF_ID_reg Module
+IF_ID_reg if_id_reg(
+    	.clk(clk),
+    	.rst_n(rst_n),
+   	.stall(),
+    	.flush(),
+
+    	// pipeline reg signals
+    	.interrupt(),
+    	.pc_plus_4(),
+    	.instr(mem_instr_data),
+    	.interrupt_out(),
+    	.pc_plus_4_out(),
+    	.instr_out()
+);
 
 //ID Module
+ID id(
+	// global signals
+	.clk(clk),
+	.rst_n(rst_n),
+
+	// from IF_ID Buffer
+	.pc_plus_4(),
+	.interrupt(),
+	.instr(),
+
+	// from WB Stage
+	.wr(),
+	.wr_dst(),
+	.wr_data(),
+
+	// to ID_EX Reg
+	.sign_ext_imm(),
+	.reg_dst(),
+	.rd1_bypass_out(),
+	.rd2_bypass_out(), 
+	.pc_plus_4_out(),
+	.interrupt_out(),
+	.opcode_out(),
+   	.cmp_out(),
+    	.returni_out(),
+    	.mem_addr_sel_out(),
+    	.sp_sel_out(),
+    	.mem_wr_out(),
+    	.wb_sel_out(),
+    	.reg_wr_out(),
+    	.call_out(),  
+	.opcode(),
+ 
+	// to IF
+	.branch_pc(),
+	.branch_sel()
+);
 
 //ID_EX_reg Module
+ID_EX_reg id_ex_reg(
+    	.clk(),
+    	.rst_n(),
+    	.stall(),
+    	.flush(),
+
+    	// pipeline reg signals,
+    	.reg_dst(),
+    	.rd1_bypass_out(),
+    	.rd2_bypass_out(), 
+    	.pc_plus_4_out(),
+    	.interrupt_out(),
+    	.sign_ext_imm_out(),
+    	.reg_dst_out(),
+    	.rd1_bypass_out_out(),
+    	.rd2_bypass_out_out(), 
+    	.pc_plus_4_out_out(),
+    	.interrupt_out_out(),
+    	.sign_ext_imm_out_out(),
+
+    //control signals
+    	.opcode_in(),
+    	.cmp_in(),
+    	.returni_in(),
+    	.mem_addr_sel_in(),
+  	.sp_sel_in(),
+    	.mem_wr_in(),
+  	.wb_sel_in(),
+    	.reg_wr_in(),
+    	.call_in(),
+    	.opcode_out(),
+    	.cmp_out(),
+    	.returni_out(),
+    	.mem_addr_sel_out(),
+    	.sp_sel_out(),
+    	.mem_wr_out(),
+    	.wb_sel_out(),
+    	.reg_wr_out(),
+    	.call_out()     
+);
 
 //EX Module
-    EX ex(
-    .clk(clk),
-    .rst_n(rst_n),
-    .rs1(),
-    .rs2(),
-    .imm(),
-    .rs1_forward(),
-    .rs2_forward(),
-    .rs1_sel(),
-    .rs2_sel(),
-    .mem_addr(),
-    .mem_data(mem_data_EX),
-    .alu_out(alu_out_EX),
-    .pc_branch_sel(pc_branch_sel_EX),
-    //control signals
-    .reg_dest_in(reg_dst_in),
-    .reg_dest_out(),
-    .opcode(),
-    .cmp(),
-    .returni(),
-    .mem_addr_sel(),
-    .sp_sel(),
-    .mem_wr_in(),
-    .mem_wr_out()
+EX ex(
+    	.clk(clk),
+    	.rst_n(rst_n),
+    	.rs1(),
+    	.rs2(),
+    	.imm(),
+    	.rs1_forward(),
+    	.rs2_forward(),
+    	.rs1_sel(),
+    	.rs2_sel(),
+    	.mem_addr(),
+    	.mem_data(mem_data_EX),
+    	.alu_out(alu_out_EX),
+    	.pc_branch_sel(pc_branch_sel_EX),
+    	//control signals
+    	.reg_dest_in(reg_dst_in),
+    	.reg_dest_out(),
+    	.opcode(),
+    	.cmp(),
+    	.returni(),
+    	.mem_addr_sel(),
+    	.sp_sel(),
+    	.mem_wr_in(),
+    	.mem_wr_out()
 );
+
 //EX_MEM_reg Module
-    EX_MEM_reg ex_mem_reg(
+EX_MEM_reg ex_mem_reg(
         .clk(clk),
         .rst_n(rst_n),
         .stall(),
@@ -113,17 +239,18 @@ wire reg_wr_MEMWR, wb_sel_MEMWB, call_MEMWB;
         //.mem_addr_sel_out(),
         //.mem_wr_out(),
         //.sp_select_out()
-    );
+);
 
 //MEM Module
-    MEM mem(
+MEM mem(
         .alu_out(),
         .sp_out(),
         .mem_addr_sel(),
         .mem_addr()
-    );
+);
+
 //MEM_WB_reg Module
-    MEM_WB_reg mem_wb_reg(
+MEM_WB_reg mem_wb_reg(
         .clk(clk),
         .rst_n(rst_n),
         .stall(),
@@ -140,9 +267,10 @@ wire reg_wr_MEMWR, wb_sel_MEMWB, call_MEMWB;
         .wb_sel_in(wb_sel_EXMEM),
         .reg_wr_out(reg_wr_MEMWB),
         .wb_sel_out(wb_sel_MEMWB)
-    );
+);
+
 //WB Module
-    WB wb(
+WB wb(
         .mem_out(mem_out_MEMWB), 
         .alu_out(alu_out_MEMWB), 
         .pc_plus4(pc_plus4_MEMWB), 
@@ -153,11 +281,12 @@ wire reg_wr_MEMWR, wb_sel_MEMWB, call_MEMWB;
         .reg_wr_data(reg_wr_data_WB), 
         .reg_dest_out(reg_dst_WB),
         .reg_wr_out(reg_wr_WB)
-    );
+);
+
 //Hazard Unit 
 
 //Forwarding Unit
-    Forwarding_Unit FU(
+Forwarding_Unit FU(
         .clk(clk),
         .rst_n(rst_n),
         .wb_reg_data(),
@@ -172,13 +301,15 @@ wire reg_wr_MEMWR, wb_sel_MEMWB, call_MEMWB;
         .rs2_sel(),
         .ex_rs1(),
         .ex_rs2()
-    );
+);
+
 //Branch Logic
-    Branch_Logic BL(
+Branch_Logic BL(
         .clk(clk),
         .rst_n(rst_n),
         .opcode(),
         .flags(),
         .pc_branch_sel_out()
-    );
+);
+
 endmodule
