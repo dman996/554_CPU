@@ -22,7 +22,7 @@ module MEM_WB_reg(
     output reg [31:0] rd2_bypass_out_out, 
     output reg [31:0] pc_plus_4_out_out,
     output reg interrupt_out_out,
-    output reg [31:0] sign_ext_imm_out_out;
+    output reg [31:0] sign_ext_imm_out_out,
 
     //control signals
     input [4:0] opcode_in,
@@ -34,15 +34,15 @@ module MEM_WB_reg(
     input wb_sel_in,
     input reg_wr_in,
     input call_in,
-    output [4:0] opcode_out,
-    output cmp_out,
-    output returni_out,
-    output mem_addr_sel_out,
-    output [1:0] sp_sel_out,
-    output mem_wr_out,
-    output wb_sel_out,
-    output reg_wr_out,
-    output call_out   
+    output reg [4:0] opcode_out,
+    output reg cmp_out,
+    output reg returni_out,
+    output reg mem_addr_sel_out,
+    output reg [1:0] sp_sel_out,
+    output reg mem_wr_out,
+    output reg wb_sel_out,
+    output reg reg_wr_out,
+    output reg call_out   
     
 );
 
