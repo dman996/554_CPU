@@ -12,17 +12,17 @@ module ID_EX_reg(
 
     // pipeline reg signals,
     input [3:0] reg_dst,
-    input [31:0] rd1_bypass_out,
-    input [31:0] rd2_bypass_out, 
-    input [31:0] pc_plus_4_out,
-    input interrupt_out,
-    input [31:0] sign_ext_imm_out,
+    input [31:0] rd1_bypass,
+    input [31:0] rd2_bypass, 
+    input [31:0] pc_plus_4,
+    input interrupt,
+    input [31:0] sign_ext_imm,
     output reg [3:0] reg_dst_out,
-    output reg [31:0] rd1_bypass_out_out,
-    output reg [31:0] rd2_bypass_out_out, 
-    output reg [31:0] pc_plus_4_out_out,
-    output reg interrupt_out_out,
-    output reg [31:0] sign_ext_imm_out_out,
+    output reg [31:0] rd1_bypass_out,
+    output reg [31:0] rd2_bypass_out, 
+    output reg [31:0] pc_plus_4_out,
+    output reg interrupt_out,
+    output reg [31:0] sign_ext_imm_out,
 
     //control signals
     input [4:0] opcode_in,
@@ -49,11 +49,11 @@ module ID_EX_reg(
 always @(posedge clk, negedge rst_n) begin
     if(!rst_n) begin
         reg_dst_out = 4'd0;
-	rd1_bypass_out_out = 32'd0;
-	rd2_bypass_out_out = 32'd0;
-	pc_plus_4_out_out = 32'd0;
-	interrupt_out_out = 1'd0;
-	sign_ext_imm_out_out = 32'd0;
+	rd1_bypass_out = 32'd0;
+	rd2_bypass_out = 32'd0;
+	pc_plus_4_out = 32'd0;
+	interrupt_out = 1'd0;
+	sign_ext_imm_out = 32'd0;
 	opcode_out = 5'd0;
 	cmp_out = 1'd0;
 	returni_out = 1'd0;
@@ -67,11 +67,11 @@ always @(posedge clk, negedge rst_n) begin
     end
     else if(flush) begin
         reg_dst_out = 4'd0;
-	rd1_bypass_out_out = 32'd0;
-	rd2_bypass_out_out = 32'd0;
-	pc_plus_4_out_out = 32'd0;
-	interrupt_out_out = 1'd0;
-	sign_ext_imm_out_out = 32'd0;
+	rd1_bypass_out = 32'd0;
+	rd2_bypass_out = 32'd0;
+	pc_plus_4_out = 32'd0;
+	interrupt_out = 1'd0;
+	sign_ext_imm_out = 32'd0;
 	opcode_out = 5'd0;
 	cmp_out = 1'd0;
 	returni_out = 1'd0;
@@ -84,10 +84,10 @@ always @(posedge clk, negedge rst_n) begin
     end
     else if(stall) begin
         reg_dst_out = reg_dst_out;
-	rd1_bypass_out_out = rd1_bypass_out_out;
-	rd2_bypass_out_out = rd2_bypass_out_out;
-	pc_plus_4_out_out = pc_plus_4_out_out;
-	interrupt_out_out = interrupt_out_out;
+	rd1_bypass_out = rd1_bypass_out;
+	rd2_bypass_out = rd2_bypass_out;
+	pc_plus_4_out = pc_plus_4_out;
+	interrupt_out = interrupt_out;
 	opcode_out = opcode_out;
 	cmp_out = cmp_out;
 	returni_out = returni_out;
@@ -100,11 +100,11 @@ always @(posedge clk, negedge rst_n) begin
     end
     else begin
         reg_dst_out = reg_dst;
-	rd1_bypass_out_out = rd1_bypass_out;
-	rd2_bypass_out_out = rd2_bypass_out;
-	pc_plus_4_out_out = pc_plus_4_out;
-	interrupt_out_out = interrupt_out;
-	sign_ext_imm_out_out = sign_ext_imm_out;
+	rd1_bypass_out = rd1_bypass;
+	rd2_bypass_out = rd2_bypass;
+	pc_plus_4_out = pc_plus_4;
+	interrupt_out = interrupt;
+	sign_ext_imm_out = sign_ext_imm;
 	opcode_out = opcode_in;
 	cmp_out = cmp_in;
 	returni_out = returni_in;
