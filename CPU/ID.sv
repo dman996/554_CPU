@@ -30,6 +30,7 @@ module ID(
     	output wb_sel_out,
     	output reg_wr_out,
     	output call_out,  
+	output [4:0] opcode,
  
 	// to IF
 	output [31:0] branch_pc,
@@ -84,6 +85,9 @@ end
 
 // Branch Logic
 assign branch_pc = sign_ext_imm + (branch_type ? pc_plus_4 : 32'd0);
+
+// Pass opcode through for the alu
+assign opcode = instr[31:27];
 
 // Control block
 Control_Unit cntrl(
