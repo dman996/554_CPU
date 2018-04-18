@@ -6,7 +6,6 @@
 //////////////////////////////////////////////////
 module MEM(
     input [31:0] mem_out_in,
-    input [31:0] rs1_in,
     input [31:0] alu_out_in,
     input [31:0] pc_plus4_in,
     input [3:0] reg_dest_in,
@@ -20,14 +19,12 @@ module MEM(
     output call_out,
 
     output [31:0] mem_out_out,
-    output [31:0] rs1_out,
     output [31:0] alu_out_out,
     output [31:0] pc_plus4_out,
     output [3:0] reg_dest_out
 );
 
 assign mem_out_out = mem_out_in;
-assign rs1_out = rs1_in;
 assign alu_out_out = alu_out_in;
 assign pc_plus4_out = pc_plus4_in;
 assign reg_dest_out = reg_dest_in;
