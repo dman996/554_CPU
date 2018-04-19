@@ -43,14 +43,14 @@ wire [31:0] pc_plus_4_IFID, instr_IFID;
 //ID Wires
 wire branch_predict_ID, inteerrupt_ID, cmp_ID, returni_ID, mem_addr_sel_ID, mem_wr_ID, wb_sel_ID, reg_wr_ID, call_ID;
 wire [31:0] branch_pc_ID, sign_ext_imm_ID, rd1_out_ID, rd2_out_ID, pc_plus_4_ID;
-wire [3:0] reg_dst_ID;
+wire [3:0] reg_dst_ID, ex_rs1_ID, ex_rs2_ID;
 wire [4:0] opcode_ID;
 wire [1:0] sp_sel_ID;
 
 //ID_EX_reg wires
 wire [31:0] pc_plus4_IDEX, rd1_out_IDEX, rd2_out_IDEX, sign_ext_imm_IDEX;
 wire [4:0] opcode_IDEX;
-wire [3:0] reg_dst_IDEX;
+wire [3:0] reg_dst_IDEX, ex_rs1_IDEX, ex_rs2_IDEX;
 wire [1:0] sp_sel_IDEX;
 wire interrupt_IDEX, cmp_IDEX, returni_IDEX, mem_addr_sel_IDEX, mem_wr_IDEX, wb_sel_IDEX, call_IDEX;
 
@@ -81,7 +81,8 @@ wire flush_EXMEM, stall_EXMEM;
 wire flush_MEMWB, stall_MEMWB;
 
 //Forwarding Unit Wires
-
+wire [31:0] rs1_forward_FU, rs2_forward_FU;
+wire rs1_sel_FF, rs2_sel_FF;
 /////////////////////////////////////////////////////////
 //         Instantiate CPU Modules here                //
 /////////////////////////////////////////////////////////
@@ -141,7 +142,6 @@ IF_ID_reg if_id_reg(
     	.pc_plus_4_out(pc_plus_4_IFID),
     	.instr_out(instr_IFID)
 );
-
 //ID Module
 ID id(
 	// global signals
@@ -177,7 +177,9 @@ ID id(
     	.wb_sel_out(wb_sel_ID),
     	.reg_wr_out(reg_wr_ID),
     	.call_out(call_ID),  
-	.opcode(opcode_ID)
+	.opcode(opcode_ID),
+		.ex_rs1(ex_rs1_ID),
+		.ex_rs2(ex_rs2_ID)
 );
 
 //ID_EX_reg Module
@@ -197,13 +199,18 @@ ID_EX_reg id_ex_reg(
     	.pc_plus_4(pc_plus_4_ID),
     	.interrupt(interrupt_ID),
     	.sign_ext_imm(sign_ext_imm_ID),
+		.ex_rs1(ex_rs1_ID),
+		.ex_rs2(ex_rs2_ID),
     	.reg_dst_out(reg_dst_IDEX),
     	.rd1_bypass_out(rd1_out_IDEX),
     	.rd2_bypass_out(rd2_out_IDEX), 
     	.pc_plus_4_out(pc_plus_4_IDEX),
     	.interrupt_out(interrupt_IDEX),
     	.sign_ext_imm_out(sign_ext_imm_IDEX),
-
+		.ex_rs1_out(ex_rs1_IDEX),
+		.ex_rs2_out(ex_rs2_IDEX),
+		
+		
     	//control signals
     	.opcode_in(opcode_ID),
     	.cmp_in(cmp_ID),
@@ -246,13 +253,12 @@ EX ex(
     	.pc_branch_sel(pc_branch_sel_EX),
 
 	// from forwarding unit
-    	.rs1_forward(),
-    	.rs2_forward(),
-    	.rs1_sel(),
-    	.rs2_sel(),
+    	.rs1_forward(rs1_forward_FU),
+    	.rs2_forward(rs2_forward_FU),
+    	.rs1_sel(rs1_sel_FF),
+    	.rs2_sel(rs2_sel_FF),
 
     	//control signals from ID_EX reg
-    	.reg_dest_in(reg_dst_IDEX),
     	.opcode(opcode_IDEX),
     	.cmp(cmp_IDEX),
     	.returni(returni_IDEX),
@@ -273,6 +279,7 @@ EX_MEM_reg ex_mem_reg(
 	// from forwarding unit
    	.stall(stall_EXMEM),
     	.flush(flush_EXMEM),
+);
 
         // pipeline reg signals
         .alu_out_in(alu_out_EX),
@@ -310,7 +317,6 @@ MEM mem(
     	.alu_out_out(alu_out_MEM),
     	.pc_plus4_out(pc_plus_4_MEM),
     	.reg_dest_out(reg_dst_MEM)
-);
 
 //MEM_WB_reg Module
 MEM_WB_reg mem_wb_reg(
@@ -391,27 +397,19 @@ Hazard_unit hazard_unit(
 Forwarding_Unit FU(
         .clk(clk),
         .rst_n(rst_n),
-        .wb_reg_data(),
+        .wb_reg_data(reg_wr_data_WB),
         .mem_reg_data(),
-        .ex_rs1_forward(),
-        .ex_rs2_forward(),
+        .ex_rs1_forward(rs1_forward_FU),
+        .ex_rs2_forward(rs2_forward_FU),
         .wb_reg_dst(),
         .mem_reg_dst(),
         .wb_wr(),
         .mem_wr(),
-        .rs1_sel(),
-        .rs2_sel(),
-        .ex_rs1(),
-        .ex_rs2()
+        .rs1_sel(rs1_sel_FF),
+        .rs2_sel(rs2_sel_FF),
+        .ex_rs1(ex_rs1_IDEX),
+        .ex_rs2(ex_rs2_IDEX)
 );
 
-//Branch Logic
-Branch_Logic BL(
-        .clk(clk),
-        .rst_n(rst_n),
-        .opcode(),
-        .flags(),
-        .pc_branch_sel_out()
-);
 
 endmodule
