@@ -26,6 +26,7 @@ module Next_PC_Logic(
 	output reg interrupt,
 	
 	// flush the output
+	output reg flush,
 	
 	// next pc value
 	output reg [31:0] pc_out

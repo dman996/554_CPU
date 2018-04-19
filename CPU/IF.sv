@@ -2,10 +2,12 @@ module IF (
 	// global signals
 	input clk,
 	input rst_n,
+
+	// from hazard unit
+	input stall,
 	
 	// select signals
 	input alert,
-	input stall,
 	input branch_predict,
 	input pcr_take,
 	input pci_take,
@@ -22,7 +24,10 @@ module IF (
 	// IF/ID buffer interface
 	output [31:0] pc_plus_4,
 	output interrupt,
-	output reg interrupt_mask
+	output reg interrupt_mask,
+
+	// to hazard unit
+	output flush
 	
 );
 
@@ -46,6 +51,7 @@ Next_PC_Logic next_pc_logic(
 	.pci_take(pci_take),
 	.branch_undo(branch_undo),
 	.alert(alert),
+	.flush(flush),
 	.interrupt(interrupt),
 	.pc_out(pc_in)
 );
