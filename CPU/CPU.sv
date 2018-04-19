@@ -15,6 +15,7 @@ module CPU(
     // memory controller signals
     input [31:0] mem_instr_data,
     input [31:0] mem_rd_data,
+    input mem_valid,
     output [31:0] mem_wr_data,
     output [31:0] mem_addr,
     output [31:0] mem_instr_addr,
@@ -73,6 +74,11 @@ wire reg_wr_MEMWB, wb_sel_MEMWB, call_MEMWB;
 //WB Wires
 
 //Hazard Unit Wires
+wire load_hazard;
+wire flush_IFID, stall_IFID;
+wire flush_IDEX, stall_IDEX;
+wire flush_EXMEM, stall_EXMEM;
+wire flush_MEMWB, stall_MEMWB;
 
 //Forwarding Unit Wires
 
@@ -87,7 +93,7 @@ IF iFetch(
 	.rst_n(rst_n),
 
 	// from forwarding unit
-	.stall(),
+	.stall(stall_IFID),
 
 	// from timer (interrupt signal source)
 	.alert(alert),
@@ -122,8 +128,8 @@ IF_ID_reg if_id_reg(
     	.rst_n(rst_n),
 
 	// from forwarding unit
-   	.stall(),
-    	.flush(),
+   	.stall(stall_IFID),
+    	.flush(flush_IFID),
 
     	// pipeline reg signals
     	.interrupt(interrupt_IF),
@@ -181,8 +187,8 @@ ID_EX_reg id_ex_reg(
     	.rst_n(rst_n),
 
 	// from forwarding unit
-   	.stall(),
-    	.flush(),
+   	.stall(stall_IDEX),
+    	.flush(flush_IDEX),
 
     	// pipeline reg signals
     	.reg_dst(reg_dst_ID),
@@ -265,8 +271,8 @@ EX_MEM_reg ex_mem_reg(
     	.rst_n(rst_n),
 
 	// from forwarding unit
-   	.stall(),
-    	.flush(),
+   	.stall(stall_EXMEM),
+    	.flush(flush_EXMEM),
 
         // pipeline reg signals
         .alu_out_in(alu_out_EX),
@@ -313,8 +319,8 @@ MEM_WB_reg mem_wb_reg(
     	.rst_n(rst_n),
 
 	// from forwarding unit
-   	.stall(),
-    	.flush(),
+   	.stall(stall_MEMWB),
+    	.flush(flush_MEMWB),
 
         // pipeline reg signals
 	.mem_out_in(mem_out_MEM),
@@ -349,7 +355,37 @@ WB wb(
         .reg_wr_out(reg_wr_WB)
 );
 
-//Hazard Unit 
+
+// TODO: figure out this situation
+assign load_hazard = 1'b0;
+
+//Hazard Unit
+Hazard_unit hazard_unit(
+
+	// hazard condition signals
+	.branch_miss(~pc_branch_sel_EX),
+	.mem_stall(~mem_valid & mem_wr),
+	.alert(alert_flush_IF),
+	.load_hazard(load_hazard),
+	.branch_call_jump(branch_predict_ID),
+
+	// outputs to IF_ID Buffer
+	.flush_if_id(flush_IFID),
+	.stall_if_id(stall_IFID),
+
+	// outputs to ID_EX Buffer
+	.flush_id_ex(flush_IDEX),
+	.stall_id_ex(stall_IDEX),
+
+	// outputs to EX_MEM Buffer	
+	.flush_ex_mem(flush_EXMEM),
+	.stall_ex_mem(stall_EXMEM),
+
+	// outputs to MEM_WB Buffer
+	.flush_mem_wb(flush_MEMWB),
+	.stall_mem_wb(stall_MEMWB)
+
+);
 
 //Forwarding Unit
 Forwarding_Unit FU(
