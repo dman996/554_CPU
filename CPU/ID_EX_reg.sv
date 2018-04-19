@@ -25,8 +25,8 @@ module ID_EX_reg(
     output reg [31:0] pc_plus_4_out,
     output reg interrupt_out,
     output reg [31:0] sign_ext_imm_out,
-    output [3:0] ex_rs1_out,
-    output [3:0] ex_rs2_out,
+    output reg[3:0] ex_rs1_out,
+    output reg [3:0] ex_rs2_out,
 
     //control signals
     input [4:0] opcode_in,
