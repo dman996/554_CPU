@@ -9,7 +9,9 @@ module Forwarding_Unit(
     input clk,
     input rst_n,
     input [31:0] wb_reg_data,
-    input [31:0] mem_reg_data,
+    input [31:0] mem_reg_data1, //alu_out
+    input [31:0] mem_reg_data2, //mem_out
+    input wb_sel,
     output reg [31:0] ex_rs1_forward,
     output reg [31:0] ex_rs2_forward,
     input [3:0] wb_reg_dst,
@@ -21,6 +23,8 @@ module Forwarding_Unit(
     input [3:0] ex_rs1,
     input [3:0] ex_rs2
 );
+wire [31:0] mem_reg_data;
+assign mem_reg_data = (wb_sel) ? mem_reg_data2 : mem_reg_data1;
 
 always @(posedge clk, negedge rst_n) begin
     if(!rst_n) begin
