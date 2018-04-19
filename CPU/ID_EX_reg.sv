@@ -17,12 +17,16 @@ module ID_EX_reg(
     input [31:0] pc_plus_4,
     input interrupt,
     input [31:0] sign_ext_imm,
+    input [3:0] ex_rs1,
+    input [3:0] ex_rs2,
     output reg [3:0] reg_dst_out,
     output reg [31:0] rd1_bypass_out,
     output reg [31:0] rd2_bypass_out, 
     output reg [31:0] pc_plus_4_out,
     output reg interrupt_out,
     output reg [31:0] sign_ext_imm_out,
+    output [3:0] ex_rs1_out,
+    output [3:0] ex_rs2_out,
 
     //control signals
     input [4:0] opcode_in,
@@ -49,6 +53,8 @@ module ID_EX_reg(
 always @(posedge clk, negedge rst_n) begin
     if(!rst_n) begin
         reg_dst_out = 4'd0;
+        ex_rs1_out = 4'b0;
+        ex_rs2_out = 4'b0;
 	rd1_bypass_out = 32'd0;
 	rd2_bypass_out = 32'd0;
 	pc_plus_4_out = 32'd0;
@@ -67,8 +73,10 @@ always @(posedge clk, negedge rst_n) begin
     end
     else if(flush) begin
         reg_dst_out = 4'd0;
-	rd1_bypass_out = 32'd0;
-	rd2_bypass_out = 32'd0;
+        ex_rs1_out = 4'b0;
+        ex_rs2_out = 4'b0;
+        rd1_bypass_out = 32'd0;
+	    rd2_bypass_out = 32'd0;
 	pc_plus_4_out = 32'd0;
 	interrupt_out = 1'd0;
 	sign_ext_imm_out = 32'd0;
@@ -84,6 +92,8 @@ always @(posedge clk, negedge rst_n) begin
     end
     else if(stall) begin
         reg_dst_out = reg_dst_out;
+        ex_rs1_out = ex_rs1_out;
+        ex_rs2_out = ex_rs2_out;
 	rd1_bypass_out = rd1_bypass_out;
 	rd2_bypass_out = rd2_bypass_out;
 	pc_plus_4_out = pc_plus_4_out;
@@ -100,7 +110,9 @@ always @(posedge clk, negedge rst_n) begin
     end
     else begin
         reg_dst_out = reg_dst;
-	rd1_bypass_out = rd1_bypass;
+        ex_rs1_out = ex_rs1;
+        ex_rs2_out = ex_rs2;
+        rd1_bypass_out = rd1_bypass;
 	rd2_bypass_out = rd2_bypass;
 	pc_plus_4_out = pc_plus_4;
 	interrupt_out = interrupt;

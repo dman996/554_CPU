@@ -17,7 +17,9 @@ module ID(
 	// to ID_EX Reg
 	output reg [31:0] sign_ext_imm,
 	output reg [3:0] reg_dst,
-	output [31:0] rd1_bypass_out,
+	output reg [3:0] ex_rs1,
+    output reg [3:0] ex_rs2,
+    output [31:0] rd1_bypass_out,
 	output [31:0] rd2_bypass_out, 
 	output [31:0] pc_plus_4_out,
 	output interrupt_out,
@@ -55,6 +57,10 @@ Register_File rf(
 	.rd1_out(rd1_out),
 	.rd2_out(rd2_out)
 );
+
+//Assign values from reg sel for forward unit in ex stage
+assign ex_rs1 = instr[27:24];
+assign ex_rs2 = instr[23:20];
 
 // Bypass Logic
 assign rd1_bypass_sel = (instr[27:24] == wr_dst) && wr;
