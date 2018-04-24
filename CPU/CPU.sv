@@ -48,7 +48,7 @@ wire [4:0] opcode_ID;
 wire [1:0] sp_sel_ID;
 
 //ID_EX_reg wires
-wire [31:0] pc_plus4_IDEX, rd1_out_IDEX, rd2_out_IDEX, sign_ext_imm_IDEX;
+wire [31:0] pc_plus_4_IDEX, rd1_out_IDEX, rd2_out_IDEX, sign_ext_imm_IDEX;
 wire [4:0] opcode_IDEX;
 wire [3:0] reg_dst_IDEX, ex_rs1_IDEX, ex_rs2_IDEX;
 wire [1:0] sp_sel_IDEX;
@@ -60,18 +60,23 @@ wire [3:0] reg_dst_EX;
 wire mem_wr_EX, pc_branch_sel_EX;
 
 //EX_MEM_reg wires
-wire [31:0] alu_out_EXMEM, mem_out_EXMEM, pc_plus4_EXMEM;
+wire [31:0] alu_out_EXMEM, mem_out_EXMEM, pc_plus_4_EXMEM;
 wire [3:0] reg_dst_EXMEM;
 wire reg_wr_EXMEM, wb_sel_EXMEM, call_EXMEM;
 
 //MEM Wires
+wire [31:0] mem_out_MEM, alu_out_MEM, pc_plus_4_MEM;
+wire [3:0] reg_dst_MEM;
+
 
 //MEM_WB_reg Wires (OUT)
-wire [31:0] alu_out_MEMWB, mem_out_MEMWB, pc_plus4_MEMWB;
+wire [31:0] alu_out_MEMWB, mem_out_MEMWB, pc_plus_4_MEMWB;
 wire [3:0] reg_dst_MEMWB;
 wire reg_wr_MEMWB, wb_sel_MEMWB, call_MEMWB;
 
 //WB Wires
+wire [3:0] reg_dst_WB;
+wire [31:0] reg_wr_data_WB;
 
 //Hazard Unit Wires
 wire load_hazard;
@@ -107,7 +112,7 @@ IF iFetch(
 
 	// pc values
 	.branch_pc(branch_pc_ID),
-	.pcr(rd1_out_EX),
+	.pcr(rd1_out_IDEX),
 	.pc_not_taken(alu_out_EX),
 	
 	// to memory controller
@@ -178,8 +183,8 @@ ID id(
     	.reg_wr_out(reg_wr_ID),
     	.call_out(call_ID),  
 	.opcode(opcode_ID),
-		.ex_rs1(ex_rs1_ID),
-		.ex_rs2(ex_rs2_ID)
+	.ex_rs1(ex_rs1_ID),
+	.ex_rs2(ex_rs2_ID)
 );
 
 //ID_EX_reg Module
@@ -199,16 +204,16 @@ ID_EX_reg id_ex_reg(
     	.pc_plus_4(pc_plus_4_ID),
     	.interrupt(interrupt_ID),
     	.sign_ext_imm(sign_ext_imm_ID),
-		.ex_rs1(ex_rs1_ID),
-		.ex_rs2(ex_rs2_ID),
+	.ex_rs1(ex_rs1_ID),
+	.ex_rs2(ex_rs2_ID),
     	.reg_dst_out(reg_dst_IDEX),
     	.rd1_bypass_out(rd1_out_IDEX),
     	.rd2_bypass_out(rd2_out_IDEX), 
     	.pc_plus_4_out(pc_plus_4_IDEX),
     	.interrupt_out(interrupt_IDEX),
     	.sign_ext_imm_out(sign_ext_imm_IDEX),
-		.ex_rs1_out(ex_rs1_IDEX),
-		.ex_rs2_out(ex_rs2_IDEX),
+	.ex_rs1_out(ex_rs1_IDEX),
+	.ex_rs2_out(ex_rs2_IDEX),
 		
 		
     	//control signals
@@ -242,11 +247,11 @@ EX ex(
     	.rs1(rd1_out_IDEX),
     	.rs2(rd2_out_IDEX),
     	.imm(sign_ext_imm_IDEX),
+	.reg_dest_in(reg_dst_IDEX),
 
 	// to memory controller
     	.mem_addr(mem_addr),
     	.mem_data(mem_wr_data),
-    	.mem_wr_out(mem_wr),
 
 	// to EX_MEM reg
     	.alu_out(alu_out_EX),
@@ -264,7 +269,6 @@ EX ex(
     	.returni(returni_IDEX),
     	.mem_addr_sel(mem_addr_sel_IDEX),
     	.sp_sel(sp_sel_IDEX),
-    	.mem_wr_in(mem_wr_IDEX),
 
 	// to EX_MEM reg
 	.reg_dest_out(reg_dst_EX)
@@ -279,7 +283,6 @@ EX_MEM_reg ex_mem_reg(
 	// from forwarding unit
    	.stall(stall_EXMEM),
     	.flush(flush_EXMEM),
-);
 
         // pipeline reg signals
         .alu_out_in(alu_out_EX),
@@ -317,6 +320,7 @@ MEM mem(
     	.alu_out_out(alu_out_MEM),
     	.pc_plus4_out(pc_plus_4_MEM),
     	.reg_dest_out(reg_dst_MEM)
+);
 
 //MEM_WB_reg Module
 MEM_WB_reg mem_wb_reg(
@@ -352,7 +356,7 @@ WB wb(
         .mem_out(mem_out_MEMWB),
         .alu_out(alu_out_MEMWB),
         .pc_plus4(pc_plus_4_MEMWB),
-        .reg_dst_in(reg_dst_MEMWB),
+        .reg_dest_in(reg_dst_MEMWB),
         .wb_sel(wb_sel_MEMWB),
         .reg_wr_in(reg_wr_MEMWB),
         .call(call_MEMWB),
@@ -399,8 +403,8 @@ Forwarding_Unit FU(
         .rst_n(rst_n),
         .wb_reg_data(reg_wr_data_WB),
         .mem_reg_data1(alu_out_EXMEM),
-		.mem_reg_data2(mem_out_MEM),
-		.wb_sel(wb_sel_MEM),
+	.mem_reg_data2(mem_out_MEM),
+	.wb_sel(wb_sel_MEM),
         .ex_rs1_forward(rs1_forward_FU),
         .ex_rs2_forward(rs2_forward_FU),
         .wb_reg_dst(reg_dst_WB),

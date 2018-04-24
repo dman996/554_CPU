@@ -18,8 +18,8 @@ module ID(
 	output reg [31:0] sign_ext_imm,
 	output reg [3:0] reg_dst,
 	output reg [3:0] ex_rs1,
-    output reg [3:0] ex_rs2,
-    output [31:0] rd1_bypass_out,
+    	output reg [3:0] ex_rs2,
+    	output [31:0] rd1_bypass_out,
 	output [31:0] rd2_bypass_out, 
 	output [31:0] pc_plus_4_out,
 	output interrupt_out,
@@ -100,7 +100,15 @@ Control_Unit cntrl(
 	.imm_sel(imm_sel),
 	.branch_type(branch_type),
 	.branch_sel(branch_sel),
-	.reg_dst_sel(reg_dst_sel)
+	.reg_dst_sel(reg_dst_sel),
+   	.cmp(cmp),
+    	.returni(returni),
+    	.mem_addr_sel(mem_addr_sel),
+    	.sp_sel(sp_sel_out),
+    	.mem_wr(mem_wr),
+    	.wb_sel(wb_sel),
+    	.reg_wr(reg_wr),
+    	.call(call)
 );
 
 endmodule

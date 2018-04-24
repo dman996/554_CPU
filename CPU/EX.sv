@@ -27,13 +27,7 @@ module EX(
     input cmp,
     input returni,
     input mem_addr_sel,
-    input [1:0] sp_sel,
-    input mem_wr_in,
-    input wb_sel_in,
-    input reg_wr_in,
-    output mem_wr_out,
-    output wb_sel_out,
-    output reg_wr_out
+    input [1:0] sp_sel
 );
 //wires
 wire [31:0] sp_addr, fwd_mux_1, fwd_mux_2;
