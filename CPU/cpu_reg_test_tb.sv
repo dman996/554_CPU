@@ -4,6 +4,7 @@
 // Module Description: This test bench will test the content of //
 //  registers after subsequent movel and moveh instructions    //
 ////////////////////////////////////////////////////////////////
+`timescale 1 ps / 1 ps
 module cpu_reg_test_tb();
 
 // global clock and reset
@@ -86,10 +87,10 @@ initial begin
     //$readmemb("./instr.txt", instr_mem);
     //$monitor("%d:current instruction is: %b",counter,if_out);
     clk = 0;
-    rst_n = 1;
-    repeat (5) @(posedge clk)
     rst_n = 0;
-
+    # 20;
+    rst_n = 1;
+    # 250;
     $finish;
 
 

@@ -57,6 +57,8 @@ SP sp(
     .err()
 );
 
+assign reg_dest_out = reg_dest_in;
+
 assign mem_addr = (mem_addr_sel) ? sp_addr:alu_out;
 assign mem_data = fwd_mux_1;
 assign fwd_mux_1 = (rs1_sel) ? rs1_forward:rs1;

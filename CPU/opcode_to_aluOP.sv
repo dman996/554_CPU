@@ -63,6 +63,8 @@ always @(*)begin
         aluOP = XORA;
     else if(opcode==NOT)
         aluOP = NOTA;
+	else
+		aluOP = ADDA;
 
 
 

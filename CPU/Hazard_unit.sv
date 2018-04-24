@@ -41,7 +41,7 @@ always_comb begin
 	// go case by case
 	if (alert) begin
 		flush_if_id = 1'b1;
-	end else if (branch_miss) begin
+	end else if (~branch_miss) begin
 		flush_if_id = 1'b1;
 		flush_id_ex = 1'b1;
 		flush_ex_mem = 1'b1;

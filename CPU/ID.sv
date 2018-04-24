@@ -49,8 +49,8 @@ wire [1:0] reg_dst_sel;
 Register_File rf(
 	.clk(clk),
 	.rst_n(rst_n),
-	.rd1(instr[27:24]),
-	.rd2(instr[23:20]),
+	.rd1(instr[26:23]),
+	.rd2(instr[22:19]),
 	.wr(wr),
 	.wr_dst(wr_dst),
 	.wr_data(wr_data),
@@ -58,15 +58,19 @@ Register_File rf(
 	.rd2_out(rd2_out)
 );
 
+assign interrupt_out = interrupt;
+
 //Assign values from reg sel for forward unit in ex stage
-assign ex_rs1 = instr[27:24];
-assign ex_rs2 = instr[23:20];
+assign ex_rs1 = instr[26:23];
+assign ex_rs2 = instr[22:19];
 
 // Bypass Logic
-assign rd1_bypass_sel = (instr[27:24] == wr_dst) && wr;
-assign rd2_bypass_sel = (instr[23:20] == wr_dst) && wr;
+assign rd1_bypass_sel = (instr[26:23] == wr_dst) && wr;
+assign rd2_bypass_sel = (instr[22:19] == wr_dst) && wr;
 assign rd1_bypass_out = rd1_bypass_sel ? wr_data : rd1_out;
 assign rd2_bypass_out = rd2_bypass_sel ? wr_data : rd2_out;
+
+assign pc_plus_4_out = pc_plus_4;
 
 // Sign Extend Immediate
 always_comb begin
@@ -81,11 +85,11 @@ end
 // Reg Write Destination Mux
 always_comb begin
 	if(reg_dst_sel == 2'b00) 
-		reg_dst = instr[27:24];
+		reg_dst = instr[26:23];
 	else if (reg_dst_sel == 2'b01)
-		reg_dst = instr[23:20];
+		reg_dst = instr[22:19];
 	else
-		reg_dst = instr[19:16];
+		reg_dst = instr[18:15];
 end
 
 // Branch Logic
@@ -101,14 +105,14 @@ Control_Unit cntrl(
 	.branch_type(branch_type),
 	.branch_sel(branch_sel),
 	.reg_dst_sel(reg_dst_sel),
-   	.cmp(cmp),
-    	.returni(returni),
-    	.mem_addr_sel(mem_addr_sel),
+   	.cmp(cmp_out),
+    	.returni(returni_out),
+    	.mem_addr_sel(mem_addr_sel_out),
     	.sp_sel(sp_sel_out),
-    	.mem_wr(mem_wr),
-    	.wb_sel(wb_sel),
-    	.reg_wr(reg_wr),
-    	.call(call)
+    	.mem_wr(mem_wr_out),
+    	.wb_sel(wb_sel_out),
+    	.reg_wr(reg_wr_out),
+    	.call(call_out)
 );
 
 endmodule
