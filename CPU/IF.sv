@@ -5,6 +5,7 @@ module IF (
 
 	// from hazard unit
 	input stall,
+	input flush_in,
 	
 	// select signals
 	input alert,

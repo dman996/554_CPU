@@ -32,6 +32,7 @@ always_comb begin
 	flush_if_id = 1'b0;
 	stall_if_id = 1'b0;
 	flush_id_ex = 1'b0;
+	stall_id_ex = 1'b0;
 	stall_if_id = 1'b0;
 	flush_ex_mem = 1'b0;
 	stall_ex_mem = 1'b0;

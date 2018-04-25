@@ -85,6 +85,7 @@ wire flush_IFID, stall_IFID;
 wire flush_IDEX, stall_IDEX;
 wire flush_EXMEM, stall_EXMEM;
 wire flush_MEMWB, stall_MEMWB;
+reg  flush_IFID_ff;
 
 //Forwarding Unit Wires
 wire [31:0] rs1_forward_FU, rs2_forward_FU;
@@ -101,6 +102,7 @@ IF iFetch(
 
 	// from forwarding unit
 	.stall(stall_IFID),
+	.flush_in(flush_IFID),
 
 	// from timer (interrupt signal source)
 	.alert(alert),
@@ -128,6 +130,14 @@ IF iFetch(
 	.flush(alert_flush_IF)
 );
 
+always @(posedge clk, negedge rst_n) begin
+	if (!rst_n)
+		flush_IFID_ff = 1'b0;
+	else
+		flush_IFID_ff = flush_IFID;
+end 
+		
+
 //IF_ID_reg Module
 IF_ID_reg if_id_reg(
 	// global signals
@@ -142,7 +152,7 @@ IF_ID_reg if_id_reg(
     	.interrupt(interrupt_IF),
 	.interrupt_mask(interrupt_mask_IF),
     	.pc_plus_4(pc_plus_4_IF),
-    	.instr(mem_instr_data),
+    	.instr(flush_IFID_ff ? 32'd0 : mem_instr_data),
     	.interrupt_out(interrupt_IFID),
 	.interrupt_mask_out(interrupt_mask_IFID),
     	.pc_plus_4_out(pc_plus_4_IFID),
