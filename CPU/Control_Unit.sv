@@ -10,6 +10,7 @@ module Control_Unit(
     	output reg mem_addr_sel,
     	output reg [1:0] sp_sel,
     	output reg mem_wr,
+		output reg mem_rd,
     	output reg wb_sel,
     	output reg reg_wr,
     	output reg call
@@ -27,6 +28,7 @@ returni = 1'b0;
 mem_addr_sel = 1'b0;
 sp_sel = 2'b00;
 mem_wr = 1'b0;
+mem_rd = 1'b0;
 wb_sel = 1'b0;
 reg_wr = 1'b0;
 call = 1'b0;
@@ -43,6 +45,7 @@ call = 1'b0;
 			mem_addr_sel = 1'b0;
 			sp_sel = 2'b00;
 			mem_wr = 1'b0;
+			mem_rd = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b0;
 			call = 1'b0;
@@ -62,6 +65,7 @@ call = 1'b0;
 			wb_sel = 1'b1;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b1;
 		end
 
 		// add
@@ -78,6 +82,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// addi
@@ -94,6 +99,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// sub
@@ -110,6 +116,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// subi
@@ -126,6 +133,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// mul
@@ -142,6 +150,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// moveh
@@ -158,6 +167,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// div
@@ -174,6 +184,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// push
@@ -190,6 +201,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b0;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// and
@@ -206,6 +218,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// andi
@@ -222,6 +235,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// or
@@ -238,6 +252,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// ori
@@ -254,6 +269,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// not
@@ -270,6 +286,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// xor
@@ -286,6 +303,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// xori
@@ -302,6 +320,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// cmp
@@ -318,6 +337,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b0;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// beq
@@ -334,6 +354,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b0;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// blt
@@ -350,6 +371,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b0;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// bgt
@@ -366,6 +388,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b0;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// bne
@@ -382,6 +405,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b0;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// jump
@@ -398,6 +422,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b0;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// jumprel
@@ -414,6 +439,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b0;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// call
@@ -430,6 +456,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b1;
 			call = 1'b1;
+			mem_rd = 1'b0;
 		end
 
 		// return
@@ -446,6 +473,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b0;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// returni
@@ -462,6 +490,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b0;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// store
@@ -478,6 +507,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b0;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// load
@@ -494,6 +524,7 @@ call = 1'b0;
 			wb_sel = 1'b1;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b1;
 		end
 
 		// movel
@@ -510,6 +541,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b1;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 
 		// halt
@@ -526,6 +558,7 @@ call = 1'b0;
 			wb_sel = 1'b0;
 			reg_wr = 1'b0;
 			call = 1'b0;
+			mem_rd = 1'b0;
 		end
 	endcase
 end

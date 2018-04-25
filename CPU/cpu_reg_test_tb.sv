@@ -41,7 +41,8 @@ CPU DUTcpu(
     .mem_wr_data(mem_wr_data),
     .mem_addr(mem_addr),
     .mem_instr_addr(mem_instr_addr),
-    .mem_wr(mem_wr)
+    .mem_wr(mem_wr),
+    .mem_rd(mem_rd)
 
 );
 
@@ -71,7 +72,7 @@ memory_controller DUTmem(
   
   // CPU Mem stage stuff
   .cpu_rw_addr(mem_addr),
-  .cpu_rw({mem_wr,~mem_wr}), // 1 -> request valid, 0 -> high read, low write
+  .cpu_rw({(mem_rd || mem_wr),~mem_wr}), // 1 -> request valid, 0 -> high read, low write
   .cpu_rw_data(cpu_rw_data),
   .cpu_rw_vld(cpu_valid),
   

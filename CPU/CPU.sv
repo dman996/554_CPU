@@ -19,7 +19,8 @@ module CPU(
     output [31:0] mem_wr_data,
     output [31:0] mem_addr,
     output [31:0] mem_instr_addr,
-    output mem_wr
+    output mem_wr,
+	output mem_rd
 
 );
 
@@ -179,6 +180,7 @@ ID id(
     	.mem_addr_sel_out(mem_addr_sel_ID),
     	.sp_sel_out(sp_sel_ID),
     	.mem_wr_out(mem_wr_ID),
+		.mem_rd_out(mem_rd_ID),
     	.wb_sel_out(wb_sel_ID),
     	.reg_wr_out(reg_wr_ID),
     	.call_out(call_ID),  
@@ -223,6 +225,7 @@ ID_EX_reg id_ex_reg(
     	.mem_addr_sel_in(mem_addr_sel_ID),
   	.sp_sel_in(sp_sel_ID),
     	.mem_wr_in(mem_wr_ID),
+		.mem_rd_in(mem_rd_ID),
   	.wb_sel_in(wb_sel_ID),
     	.reg_wr_in(reg_wr_ID),
     	.call_in(call_ID),
@@ -231,7 +234,8 @@ ID_EX_reg id_ex_reg(
     	.returni_out(returni_IDEX),
     	.mem_addr_sel_out(mem_addr_sel_IDEX),
     	.sp_sel_out(sp_sel_IDEX),
-    	.mem_wr_out(mem_wr_IDEX),
+    	.mem_wr_out(mem_wr),
+		.mem_rd_out(mem_rd),
     	.wb_sel_out(wb_sel_IDEX),
     	.reg_wr_out(reg_wr_IDEX),
     	.call_out(call_IDEX)     

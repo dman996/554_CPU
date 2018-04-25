@@ -28,6 +28,7 @@ module ID(
     	output mem_addr_sel_out,
     	output [1:0] sp_sel_out,
     	output mem_wr_out,
+		output mem_rd_out,
     	output wb_sel_out,
     	output reg_wr_out,
     	output call_out,  
@@ -110,6 +111,7 @@ Control_Unit cntrl(
     	.mem_addr_sel(mem_addr_sel_out),
     	.sp_sel(sp_sel_out),
     	.mem_wr(mem_wr_out),
+		.mem_rd(mem_rd_out),
     	.wb_sel(wb_sel_out),
     	.reg_wr(reg_wr_out),
     	.call(call_out)

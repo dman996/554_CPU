@@ -35,6 +35,7 @@ module ID_EX_reg(
     input mem_addr_sel_in,
     input [1:0] sp_sel_in,
     input mem_wr_in,
+	input mem_rd_in,
     input wb_sel_in,
     input reg_wr_in,
     input call_in,
@@ -44,6 +45,7 @@ module ID_EX_reg(
     output reg mem_addr_sel_out,
     output reg [1:0] sp_sel_out,
     output reg mem_wr_out,
+	output reg mem_rd_out,
     output reg wb_sel_out,
     output reg reg_wr_out,
     output reg call_out   
@@ -66,6 +68,7 @@ always @(posedge clk, negedge rst_n) begin
 	mem_addr_sel_out = 1'd0;
 	sp_sel_out = 2'd0;
 	mem_wr_out = 1'd0;
+	mem_rd_out = 1'd0;
 	wb_sel_out = 1'd0;
 	reg_wr_out = 1'd0;
 	call_out = 1'd0;
@@ -86,6 +89,7 @@ always @(posedge clk, negedge rst_n) begin
 	mem_addr_sel_out = 1'd0;
 	sp_sel_out = 2'd0;
 	mem_wr_out = 1'd0;
+	mem_rd_out = 1'd0;
 	wb_sel_out = 1'd0;
 	reg_wr_out = 1'd0;
 	call_out = 1'd0;
@@ -103,7 +107,8 @@ always @(posedge clk, negedge rst_n) begin
 	returni_out = returni_out;
 	mem_addr_sel_out = mem_addr_sel_out;
 	sp_sel_out = sp_sel_out;
-	mem_wr_out = mem_wr_out;
+	mem_wr_out = 1'b0;
+	mem_rd_out = 1'b0;
 	wb_sel_out = wb_sel_out;
 	reg_wr_out = reg_wr_out;
 	call_out = call_out;
@@ -123,6 +128,7 @@ always @(posedge clk, negedge rst_n) begin
 	mem_addr_sel_out = mem_addr_sel_in;
 	sp_sel_out = sp_sel_in;
 	mem_wr_out = mem_wr_in;
+	mem_rd_out = mem_rd_in;
 	wb_sel_out = wb_sel_in;
 	reg_wr_out = reg_wr_in;
 	call_out = call_in;
