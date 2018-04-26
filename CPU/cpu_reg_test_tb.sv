@@ -92,6 +92,7 @@ initial begin
     # 20;
     rst_n = 1;
     # 1000;
+    $display("Test done");
     $finish;
 
 
