@@ -43,7 +43,7 @@ wire [31:0] pc_plus_4_IFID, instr_IFID;
 
 //ID Wires
 wire branch_predict_ID, inteerrupt_ID, cmp_ID, returni_ID, mem_addr_sel_ID, mem_wr_ID, wb_sel_ID, reg_wr_ID, call_ID;
-wire [31:0] branch_pc_ID, sign_ext_imm_ID, rd1_out_ID, rd2_out_ID, pc_plus_4_ID;
+wire [31:0] branch_pc_ID, sign_ext_imm_ID, rd1_out_ID, rd2_out_ID, pc_plus_4_ID, mem_instr_data_stalled;
 wire [3:0] reg_dst_ID, ex_rs1_ID, ex_rs2_ID;
 wire [4:0] opcode_ID;
 wire [1:0] sp_sel_ID;
@@ -158,6 +158,21 @@ IF_ID_reg if_id_reg(
     	.pc_plus_4_out(pc_plus_4_IFID),
     	.instr_out(instr_IFID)
 );
+
+instr_staller instrstall(
+	// global clock and reset
+	.clk(clk),
+	.rst_n(rst_n),
+	
+	// stall from hazard unit
+	.stall(stall_IFID),
+
+	// instruction from mem controller
+	.instr_in(mem_instr_data),
+	
+	// output
+	.instr_out(mem_instr_data_stalled)
+);
 //ID Module
 ID id(
 	// global signals
@@ -167,7 +182,7 @@ ID id(
 	// from IF_ID Buffer
 	.pc_plus_4(pc_plus_4_IFID),
 	.interrupt(interrupt_IFID),
-	.instr(flush_IFID_ff ? 32'd0 : mem_instr_data),
+	.instr(flush_IFID_ff ? 32'd0 : mem_instr_data_stalled),
 
 	// from WB Stage
 	.wr(reg_wr_WB),
