@@ -18,20 +18,17 @@ localparam BLT = 5'b10100;
 localparam BGT = 5'b10101;
 localparam BNE = 5'b10110;
 
-always @(posedge clk, negedge rst_n) begin
-    if(!rst_n) begin
-        pc_branch_sel_out = 0;
-    end
-    else if((opcode == BEQ) && (flags ==? 2'b1?)) begin
+always_comb begin
+    if((opcode == BEQ) && !(flags ==? 2'b1?)) begin
         pc_branch_sel_out = 1;
     end
-    else if((opcode == BNE) && (flags ==? 2'b0?)) begin
+    else if((opcode == BNE) && !(flags ==? 2'b0?)) begin
         pc_branch_sel_out = 1;
     end
-    else if((opcode == BLT) && (flags ==? 2'b?1)) begin
+    else if((opcode == BLT) && !(flags ==? 2'b?1)) begin
         pc_branch_sel_out = 1;
     end
-    else if((opcode == BGT) && (flags ==? 2'b?0)) begin
+    else if((opcode == BGT) && !(flags ==? 2'b?0)) begin
         pc_branch_sel_out = 1;
     end
     else begin

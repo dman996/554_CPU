@@ -116,7 +116,7 @@ IF iFetch(
 	// pc values
 	.branch_pc(branch_pc_ID),
 	.pcr(rd1_out_IDEX),
-	.pc_not_taken(alu_out_EX),
+	.pc_not_taken(pc_plus_4_IDEX),
 	
 	// to memory controller
 	.mem_addr(mem_instr_addr),
@@ -167,7 +167,7 @@ ID id(
 	// from IF_ID Buffer
 	.pc_plus_4(pc_plus_4_IFID),
 	.interrupt(interrupt_IFID),
-	.instr(instr_IFID),
+	.instr(flush_IFID_ff ? 32'd0 : mem_instr_data),
 
 	// from WB Stage
 	.wr(reg_wr_WB),
@@ -387,7 +387,7 @@ assign load_hazard = 1'b0;
 Hazard_unit hazard_unit(
 
 	// hazard condition signals
-	.branch_miss(~pc_branch_sel_EX),
+	.branch_miss(pc_branch_sel_EX),
 	.mem_stall(~mem_valid & mem_wr),
 	.alert(alert_flush_IF),
 	.load_hazard(load_hazard),

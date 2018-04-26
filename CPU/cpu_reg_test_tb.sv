@@ -91,7 +91,7 @@ initial begin
     rst_n = 0;
     # 20;
     rst_n = 1;
-    # 250;
+    # 1000;
     $finish;
 
 
