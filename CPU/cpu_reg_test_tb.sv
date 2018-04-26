@@ -18,12 +18,11 @@ reg [31:0] mem_wr_data, mem_addr, mem_instr_addr;
 reg mem_wr;
 
 // from memory controller
-wire [31:0] mem_instr_data, cpu_rw_data;
+wire [31:0] mem_instr_data, cpu_rw_data, rb_wire;
 wire cpu_valid;
 
-
 assign cpu_rw_data = mem_wr ? mem_wr_data : 32'hzzzzzzzz;
-
+assign rb_wire = DUTcpu.reg_wr_data_WB;
 
 CPU DUTcpu(
 
@@ -86,12 +85,12 @@ memory_controller DUTmem(
 );
 initial begin
     //$readmemb("./instr.txt", instr_mem);
-    //$monitor("%d:current instruction is: %b",counter,if_out);
+    $monitor("wb value is: %d",rb_wire);
     clk = 0;
     rst_n = 0;
-    # 20;
+    # 10;
     rst_n = 1;
-    # 1000;
+    repeat (1000) @(posedge clk);
     $display("Test done");
     $finish;
 
