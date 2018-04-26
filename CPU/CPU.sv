@@ -34,7 +34,7 @@ module CPU(
 // Example: "alu_out_EX" -> comes from the EX stage
 
 //IF Wires
-wire [31:0] pc_plus_4_IF;
+wire [31:0] pc_plus_4_IF, pci_next;
 wire interrupt_IF, interrupt_mask_IF, alert_flush_IF;
 
 //IF_ID_reg wires
@@ -42,7 +42,7 @@ wire interrupt_IFID, interrupt_mask_IFID;
 wire [31:0] pc_plus_4_IFID, instr_IFID;
 
 //ID Wires
-wire branch_predict_ID, inteerrupt_ID, cmp_ID, returni_ID, mem_addr_sel_ID, mem_wr_ID, wb_sel_ID, reg_wr_ID, call_ID;
+wire branch_predict_ID, interrupt_ID, cmp_ID, returni_ID, mem_addr_sel_ID, mem_wr_ID, mem_rd_ID, wb_sel_ID, reg_wr_ID, call_ID;
 wire [31:0] branch_pc_ID, sign_ext_imm_ID, rd1_out_ID, rd2_out_ID, pc_plus_4_ID, mem_instr_data_stalled;
 wire [3:0] reg_dst_ID, ex_rs1_ID, ex_rs2_ID;
 wire [4:0] opcode_ID;
@@ -53,31 +53,33 @@ wire [31:0] pc_plus_4_IDEX, rd1_out_IDEX, rd2_out_IDEX, sign_ext_imm_IDEX;
 wire [4:0] opcode_IDEX;
 wire [3:0] reg_dst_IDEX, ex_rs1_IDEX, ex_rs2_IDEX;
 wire [1:0] sp_sel_IDEX;
-wire interrupt_IDEX, cmp_IDEX, returni_IDEX, mem_addr_sel_IDEX, mem_wr_IDEX, wb_sel_IDEX, call_IDEX;
+wire interrupt_IDEX, cmp_IDEX, returni_IDEX, mem_addr_sel_IDEX, mem_wr_IDEX, wb_sel_IDEX, call_IDEX, reg_wr_IDEX, high_IDEX, low_IDEX;
 
 //EX_wires
 wire [31:0] alu_out_EX;
 wire [3:0] reg_dst_EX;
-wire mem_wr_EX, pc_branch_sel_EX;
+wire mem_wr_EX, pc_branch_sel_EX, pcr_take, pcr_take_out;
 
 //EX_MEM_reg wires
 wire [31:0] alu_out_EXMEM, mem_out_EXMEM, pc_plus_4_EXMEM;
 wire [3:0] reg_dst_EXMEM;
-wire reg_wr_EXMEM, wb_sel_EXMEM, call_EXMEM;
+wire reg_wr_EXMEM, wb_sel_EXMEM, call_EXMEM, high_EXMEM, low_EXMEM;
 
 //MEM Wires
 wire [31:0] mem_out_MEM, alu_out_MEM, pc_plus_4_MEM;
 wire [3:0] reg_dst_MEM;
+wire reg_wr_MEM;
 
 
 //MEM_WB_reg Wires (OUT)
 wire [31:0] alu_out_MEMWB, mem_out_MEMWB, pc_plus_4_MEMWB;
 wire [3:0] reg_dst_MEMWB;
-wire reg_wr_MEMWB, wb_sel_MEMWB, call_MEMWB;
+wire reg_wr_MEMWB, wb_sel_MEMWB, call_MEMWB, high_MEMWB, low_MEMWB;
 
 //WB Wires
 wire [3:0] reg_dst_WB;
 wire [31:0] reg_wr_data_WB;
+wire wb_sel_MEM, reg_wr_WB;
 
 //Hazard Unit Wires
 wire load_hazard;
@@ -109,7 +111,7 @@ IF iFetch(
 	
 	// select signals
 	.branch_predict(branch_predict_ID),
-	.pcr_take(),
+	.pcr_take(pcr_take_out),
 	.pci_take(returni_ID),
 	.branch_undo(pc_branch_sel_EX),
 
@@ -188,10 +190,13 @@ ID id(
 	.wr(reg_wr_WB),
 	.wr_dst(reg_dst_WB),
 	.wr_data(reg_wr_data_WB),
+	.high(high_MEMWB),
+	.low(low_MEMWB),
 
 	// to IF
 	.branch_pc(branch_pc_ID),
 	.branch_sel(branch_predict_ID),
+	.pcr_take(pcr_take),
 
 	// to ID_EX Reg
 	.sign_ext_imm(sign_ext_imm_ID),
@@ -254,6 +259,9 @@ ID_EX_reg id_ex_reg(
   	.wb_sel_in(wb_sel_ID),
     	.reg_wr_in(reg_wr_ID),
     	.call_in(call_ID),
+	.pcr_take_in(pcr_take),
+	.high_in(opcode_ID == 5'b00111),
+	.low_in(opcode_ID == 5'b11110),
     	.opcode_out(opcode_IDEX),
     	.cmp_out(cmp_IDEX),
     	.returni_out(returni_IDEX),
@@ -263,7 +271,10 @@ ID_EX_reg id_ex_reg(
 		.mem_rd_out(mem_rd),
     	.wb_sel_out(wb_sel_IDEX),
     	.reg_wr_out(reg_wr_IDEX),
-    	.call_out(call_IDEX)     
+    	.call_out(call_IDEX),
+	.pcr_take_out(pcr_take_out),
+		.high_out(high_IDEX),
+		.low_out(low_IDEX)
 );
 
 //EX Module
@@ -325,9 +336,13 @@ EX_MEM_reg ex_mem_reg(
         .reg_wr_in(reg_wr_IDEX),
         .wb_sel_in(wb_sel_IDEX),
 	.call(call_IDEX),
+	.high_in(high_IDEX),
+		.low_in(low_IDEX),
         .reg_wr_out(reg_wr_EXMEM),
         .wb_sel_out(wb_sel_EXMEM),
-	.call_out(call_EXMEM)
+	.call_out(call_EXMEM),
+	.high_out(high_EXMEM),
+		.low_out(low_EXMEM)
 );
 
 //MEM Module
@@ -375,9 +390,13 @@ MEM_WB_reg mem_wb_reg(
         .reg_wr_in(reg_wr_MEM),
         .wb_sel_in(wb_sel_MEM),
 	.call(call_EXMEM),
+	.high_in(high_EXMEM),
+		.low_in(low_EXMEM),
         .reg_wr_out(reg_wr_MEMWB),
         .wb_sel_out(wb_sel_MEMWB),
-	.call_out(call_MEMWB)
+	.call_out(call_MEMWB),
+	.high_out(high_MEMWB),
+		.low_out(low_MEMWB)
 );
 
 //WB Module
@@ -402,7 +421,7 @@ assign load_hazard = 1'b0;
 Hazard_unit hazard_unit(
 
 	// hazard condition signals
-	.branch_miss(pc_branch_sel_EX),
+	.branch_miss(pc_branch_sel_EX || pcr_take_out),
 	.mem_stall(~mem_valid & mem_wr),
 	.alert(alert_flush_IF),
 	.load_hazard(load_hazard),

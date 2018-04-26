@@ -463,7 +463,7 @@ call = 1'b0;
 		5'b11010: begin
 			imm_sel = 2'b00;
 			branch_type = 1'b0;
-			branch_sel = 1'b1;
+			branch_sel = 1'b0;
 			reg_dst_sel = 2'b00;
 			cmp = 1'b0;
 			returni = 1'b0;
@@ -546,6 +546,22 @@ call = 1'b0;
 
 		// halt
 		5'b11111: begin
+			imm_sel = 2'b00;
+			branch_type = 1'b0;
+			branch_sel = 1'b0;
+			reg_dst_sel = 2'b00;
+			cmp = 1'b0;
+			returni = 1'b0;
+			mem_addr_sel = 1'b0;
+			sp_sel = 2'b00;
+			mem_wr = 1'b0;
+			wb_sel = 1'b0;
+			reg_wr = 1'b0;
+			call = 1'b0;
+			mem_rd = 1'b0;
+		end
+		
+		default: begin
 			imm_sel = 2'b00;
 			branch_type = 1'b0;
 			branch_sel = 1'b0;

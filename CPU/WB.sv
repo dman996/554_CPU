@@ -27,7 +27,7 @@ module WB(
 wire [31:0] mem_or_alu;
 
 //assign passthrough outputs
-assign reg_dest_out = reg_dest_in;
+assign reg_dest_out = (call) ? 4'd15 : reg_dest_in;
 assign reg_wr_out = reg_wr_in;
 
 //mux logic

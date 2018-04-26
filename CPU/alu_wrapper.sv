@@ -78,7 +78,7 @@ always @(*) begin
     end
     else if(opcode==MOVEH) begin
         a_final = imm;
-        b_final = 32'hffff0000;
+        b_final = 32'h0000ffff;
     end
     else begin
         a_final = a;

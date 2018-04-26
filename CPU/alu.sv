@@ -53,9 +53,9 @@ localparam NOTA  = 3'b111;
 wire [2:0] op;
 
 opcode_to_aluOP decoder(.opcode(opcode), .aluOP(op));
-assign flags[1] = (alu_out == 0) ? 1:0;
-assign flags[0] = (alu_out < 0) ? 1:0;
-always @(*) begin
+assign flags[1] = (alu_out == 32'd0) ? 1'b1:1'b0;
+assign flags[0] = (alu_out < 32'd0) ? 1'b1:1'b0;
+always_comb begin
     if(op==ADDA) begin
         alu_out = a + b;
     end
@@ -81,16 +81,9 @@ always @(*) begin
     else if(op==NOTA) begin
         alu_out = !a;
     end
+	 else
+		alu_out = 32'd0;
 end
-
-
-
-
-
-
-
-
-
 
 endmodule
 // line for revision controll version 1.0

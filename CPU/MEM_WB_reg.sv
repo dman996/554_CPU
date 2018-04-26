@@ -24,9 +24,13 @@ module MEM_WB_reg(
     input reg_wr_in,
     input wb_sel_in,
     input call,
+	input high_in,
+	input low_in,
     output reg reg_wr_out,
     output reg wb_sel_out,
-    output reg call_out
+    output reg call_out,
+	output reg high_out,
+	output reg low_out
 );
 
 always @(posedge clk, negedge rst_n) begin
@@ -38,6 +42,8 @@ always @(posedge clk, negedge rst_n) begin
         pc_plus4_out = 0;
 	call_out = 0;
 	mem_out_out = 0;
+	high_out = 1'b0;
+	low_out = 1'b0;
     end
     else if(flush) begin
         alu_out_out = 0;
@@ -47,6 +53,8 @@ always @(posedge clk, negedge rst_n) begin
         pc_plus4_out = 0;
 	call_out = 0;
 	mem_out_out = 0;
+	high_out = 1'b0;
+	low_out = 1'b0;
     end
     else if(stall) begin
         alu_out_out = alu_out_out;
@@ -56,6 +64,8 @@ always @(posedge clk, negedge rst_n) begin
         pc_plus4_out = pc_plus4_out;
 	call_out = call_out;
 	mem_out_out = mem_out_out;
+	high_out = high_out;
+	low_out = low_out;
     end
     else begin
         alu_out_out = alu_out_in;
@@ -65,6 +75,8 @@ always @(posedge clk, negedge rst_n) begin
         pc_plus4_out = pc_plus4_in;
  	call_out = call;
 	mem_out_out = mem_out_in;
+	high_out = high_in;
+	low_out = low_in;
     end
 end
 

@@ -39,6 +39,9 @@ module ID_EX_reg(
     input wb_sel_in,
     input reg_wr_in,
     input call_in,
+	input pcr_take_in,
+	input high_in,
+	input low_in,
     output reg [4:0] opcode_out,
     output reg cmp_out,
     output reg returni_out,
@@ -48,7 +51,10 @@ module ID_EX_reg(
 	output reg mem_rd_out,
     output reg wb_sel_out,
     output reg reg_wr_out,
-    output reg call_out   
+    output reg call_out,
+	output reg pcr_take_out,
+	output reg high_out,
+	output reg low_out
     
 );
 
@@ -72,6 +78,9 @@ always @(posedge clk, negedge rst_n) begin
 	wb_sel_out = 1'd0;
 	reg_wr_out = 1'd0;
 	call_out = 1'd0;
+	pcr_take_out = 1'b0;
+	high_out = 1'b0;
+	low_out = 1'b0;
 	
     end
     else if(flush) begin
@@ -93,6 +102,9 @@ always @(posedge clk, negedge rst_n) begin
 	wb_sel_out = 1'd0;
 	reg_wr_out = 1'd0;
 	call_out = 1'd0;
+	pcr_take_out = 1'b0;
+	high_out = 1'b0;
+	low_out = 1'b0;
     end
     else if(stall) begin
         reg_dst_out = reg_dst_out;
@@ -112,6 +124,9 @@ always @(posedge clk, negedge rst_n) begin
 	wb_sel_out = wb_sel_out;
 	reg_wr_out = reg_wr_out;
 	call_out = call_out;
+	pcr_take_out = pcr_take_out;
+	high_out = high_out;
+	low_out = low_out;
     end
     else begin
         reg_dst_out = reg_dst;
@@ -132,6 +147,9 @@ always @(posedge clk, negedge rst_n) begin
 	wb_sel_out = wb_sel_in;
 	reg_wr_out = reg_wr_in;
 	call_out = call_in;
+	pcr_take_out = pcr_take_in;
+	high_out = high_in;
+	low_out = low_in;
     end
 end
 

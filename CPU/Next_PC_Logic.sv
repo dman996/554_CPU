@@ -29,7 +29,8 @@ module Next_PC_Logic(
 	output reg flush,
 	
 	// next pc value
-	output reg [31:0] pc_out
+	output reg [31:0] pc_out,
+	output reg [31:0] pci_out
 	
 );
 
@@ -37,15 +38,15 @@ module Next_PC_Logic(
 reg [2:0] counter;
 
 // states
-localparam S0=1'b0, S1=1'b1;
-reg state, next_state;
+localparam S0=2'b00, S1=2'b01, SR=2'b10;
+reg [1:0] state, next_state;
 
 assign flush = (state == S1);
 
 // state ff
 always_ff @(posedge clk, negedge rst_n) begin
 	if(!rst_n)
-		state <= S0;
+		state <= SR;
 	else
 		state <= next_state;
 end
@@ -70,6 +71,10 @@ always_comb begin
 next_state = S0;
 
 	case(state)
+	
+		SR: begin
+			next_state = S0;
+		end
 
 		S0: begin
 			if (alert && !interrupt_mask)
@@ -83,6 +88,30 @@ next_state = S0;
 	endcase
 end
 
+always_latch begin
+
+	pci_out = pci_out;
+	
+	case(state)
+	
+		SR: begin
+			pci_out = pc_plus_4;
+		end
+		S0: begin
+			pci_out = pc_plus_4;
+		end
+		S1: begin
+			if (branch_undo)
+				pci_out = pc_not_taken;
+			else if (pcr_take)
+				pci_out = pcr;
+			else if (branch_predict)
+				pci_out = branch_pc;
+		end
+	endcase
+end
+			
+
 
 // output logic
 always_comb begin
@@ -92,6 +121,11 @@ pc_out = pc;
 interrupt = 1'b0;
 
 	case(state)
+	
+		// reset state
+		SR: begin
+			pc_out = pc;
+		end
 	
 		// normal state
 		S0: begin
@@ -115,7 +149,7 @@ interrupt = 1'b0;
 		S1: begin
 			if (counter == 3'b011) begin
 				interrupt = 1'b1;
-				pc_out = pci;
+				pc_out = 32'd1024;
 			end
 		end
 	endcase

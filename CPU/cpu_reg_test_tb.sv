@@ -89,9 +89,14 @@ initial begin
     //$monitor("%d:current instruction is: %b",counter,if_out);
     clk = 0;
     rst_n = 0;
+    alert = 0;
     # 20;
     rst_n = 1;
-    # 1000;
+    # 200;
+    alert = 1;
+    #10;
+    alert = 0;
+    #500
     $display("Test done");
     $finish;
 

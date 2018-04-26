@@ -13,6 +13,8 @@ module ID(
 	input wr,
 	input [3:0] wr_dst,
 	input [31:0] wr_data,
+	input high,
+	input low,
 
 	// to ID_EX Reg
 	output reg [31:0] sign_ext_imm,
@@ -36,10 +38,12 @@ module ID(
  
 	// to IF
 	output [31:0] branch_pc,
-	output branch_sel
+	output branch_sel,
+	output pcr_take
 );
 
 wire [31:0] rd1_out, rd2_out;
+wire rd1_bypass_sel, rd2_bypass_sel;
 
 // control wires
 wire [1:0] imm_sel;
@@ -50,11 +54,13 @@ wire [1:0] reg_dst_sel;
 Register_File rf(
 	.clk(clk),
 	.rst_n(rst_n),
-	.rd1(instr[26:23]),
+	.rd1((opcode == 5'b11010) ? 4'd15 : instr[26:23]), // a return needs to read R15
 	.rd2(instr[22:19]),
 	.wr(wr),
 	.wr_dst(wr_dst),
 	.wr_data(wr_data),
+	.high(high),
+	.low(low),
 	.rd1_out(rd1_out),
 	.rd2_out(rd2_out)
 );
@@ -98,6 +104,7 @@ assign branch_pc = sign_ext_imm + (branch_type ? pc_plus_4 : 32'd0);
 
 // Pass opcode through for the alu
 assign opcode = instr[31:27];
+assign pcr_take = instr[31:27] == 5'b11010;
 
 // Control block
 Control_Unit cntrl(
