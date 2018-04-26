@@ -67,7 +67,7 @@ dff_en pci_ff(
 );
 
 // PC Register
-dff_en pc_ff(
+dff_en_pc pc_ff(
 	.clk(clk),
 	.rst_n(rst_n),
 	.en(1'b1),
