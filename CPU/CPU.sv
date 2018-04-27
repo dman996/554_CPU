@@ -14,13 +14,13 @@ module CPU(
 
     // memory controller signals
     input [31:0] mem_instr_data,
-    input [31:0] mem_rd_data,
     input mem_valid,
     output [31:0] mem_wr_data,
     output [31:0] mem_addr,
     output [31:0] mem_instr_addr,
     output mem_wr,
-	output mem_rd
+	output mem_rd,
+	inout [31:0] cpu_rw_data
 
 );
 
@@ -69,6 +69,7 @@ wire reg_wr_EXMEM, wb_sel_EXMEM, call_EXMEM, high_EXMEM, low_EXMEM;
 wire [31:0] mem_out_MEM, alu_out_MEM, pc_plus_4_MEM;
 wire [3:0] reg_dst_MEM;
 wire reg_wr_MEM;
+wire [31:0] mem_rd_data;
 
 
 //MEM_WB_reg Wires (OUT)
@@ -95,6 +96,9 @@ wire rs1_sel_FF, rs2_sel_FF;
 /////////////////////////////////////////////////////////
 //         Instantiate CPU Modules here                //
 /////////////////////////////////////////////////////////
+
+assign cpu_rw_data = mem_wr ? mem_wr_data : 32'hzzzzzzzz;
+assign mem_rd_data = mem_rd ? cpu_rw_data : 32'd0;
 
 //IF Module
 IF iFetch(
@@ -348,7 +352,7 @@ EX_MEM_reg ex_mem_reg(
 //MEM Module
 MEM mem(
 	// from EX_MEM reg
-    	.mem_out_in(mem_rd_data),
+    	.mem_out_in(~mem_wr ? mem_rd_data : 32'd0),
     	.alu_out_in(alu_out_EXMEM),
     	.pc_plus4_in(pc_plus_4_EXMEM),
     	.reg_dest_in(reg_dst_EXMEM),

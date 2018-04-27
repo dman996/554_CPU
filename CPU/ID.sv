@@ -50,6 +50,8 @@ wire [1:0] imm_sel;
 wire branch_type;
 wire [1:0] reg_dst_sel;
 
+reg [31:0] rd1_bypass_high, rd1_bypass_low, rd2_bypass_high, rd2_bypass_low;
+
 // Register File
 Register_File rf(
 	.clk(clk),
@@ -71,12 +73,22 @@ assign interrupt_out = interrupt;
 assign ex_rs1 = instr[26:23];
 assign ex_rs2 = instr[22:19];
 
+assign rd1_bypass_high = (wr_data << 16) | rd1_out;
+assign rd1_bypass_low = (rd1_out << 16) | wr_data;
+assign rd2_bypass_high = (wr_data << 16) | rd2_out;
+assign rd2_bypass_low = (rd2_out << 16) | wr_data;
+
 // Bypass Logic
 assign rd1_bypass_sel = (instr[26:23] == wr_dst) && wr;
 assign rd2_bypass_sel = (instr[22:19] == wr_dst) && wr;
-assign rd1_bypass_out = rd1_bypass_sel ? wr_data : rd1_out;
-assign rd2_bypass_out = rd2_bypass_sel ? wr_data : rd2_out;
-
+assign rd1_bypass_out = rd1_bypass_sel ? ((high) ? rd1_bypass_high:
+										  (low) ? wr_data : 
+										  wr_data) :
+										  rd1_out;
+assign rd2_bypass_out = rd2_bypass_sel ? ((high) ? rd2_bypass_high:
+										  (low) ? wr_data : 
+										  wr_data) :
+										  rd2_out;
 assign pc_plus_4_out = pc_plus_4;
 
 // Sign Extend Immediate
@@ -84,7 +96,7 @@ always_comb begin
 	if(imm_sel == 2'b00)
 		sign_ext_imm = {{15{instr[15]}},instr[15:0]};
 	else if (imm_sel == 2'b01)
-		sign_ext_imm = {{12{instr[18]}},instr[18:0]};
+		sign_ext_imm = {{14{instr[17]}},instr[17:0]};
 	else
 		sign_ext_imm = {{5{instr[26]}},instr[26:0]};
 end

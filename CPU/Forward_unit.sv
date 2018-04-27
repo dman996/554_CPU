@@ -44,7 +44,7 @@ always_comb begin
             rs1_sel = 1;
         end
         else begin
-				ex_rs1_forward = 32'd0;
+			ex_rs1_forward = 32'd0;
             rs1_sel = 0;
         end
         // Check to see if data can be forwarded to rs2 in the ex stage

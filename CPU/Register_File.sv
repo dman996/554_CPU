@@ -43,9 +43,9 @@ always_ff @(posedge clk, negedge rst_n) begin
 	end	
 	else if (wr)
 		if (high)
-			reg_array[wr_dst] = (wr_data << 32'd16) | reg_array[wr_dst];
+			reg_array[wr_dst] = ((wr_data & 32'h0000FFFF) << 16) | (reg_array[wr_dst] & 32'h0000FFFF);
 		else if (low)
-			reg_array[wr_dst] = (reg_array[wr_dst] << 32'd16) | wr_data;
+			reg_array[wr_dst] = ((reg_array[wr_dst] & 32'hFFFF0000) | (wr_data & 32'h0000FFFF));
 		else
 			reg_array[wr_dst] = wr_data;
 end

@@ -11,7 +11,7 @@ module cpu_reg_test_tb();
 reg clk, rst_n;
 
 // interrup from timer
-reg alert;
+wire alert;
 
 // to memory controller
 reg [31:0] mem_wr_data, mem_addr, mem_instr_addr;
@@ -21,8 +21,12 @@ reg mem_wr;
 wire [31:0] mem_instr_data, cpu_rw_data, rb_wire;
 wire cpu_valid;
 
+// timer wires
+wire timer_clr;
+wire [31:0] set_timer;
+
 assign cpu_rw_data = mem_wr ? mem_wr_data : 32'hzzzzzzzz;
-assign rb_wire = DUTcpu.reg_wr_data_WB;
+
 
 CPU DUTcpu(
 
@@ -35,13 +39,13 @@ CPU DUTcpu(
 
     // memory controller signals
     .mem_instr_data(mem_instr_data),
-    .mem_rd_data(cpu_rw_data),
     .mem_valid(cpu_valid),
     .mem_wr_data(mem_wr_data),
     .mem_addr(mem_addr),
     .mem_instr_addr(mem_instr_addr),
     .mem_wr(mem_wr),
-    .mem_rd(mem_rd)
+    .mem_rd(mem_rd),
+    .cpu_rw_data(cpu_rw_data)
 
 );
 
@@ -77,31 +81,31 @@ memory_controller DUTmem(
   
   // PWM and Timer module accesses
   .pwm_data(),
-  .timer_data(),
-  .timer_clr()
-  
-  
+  .timer_data(set_timer),
+  .timer_clr(timer_clr)
 
 );
+
+timer timerDUT(
+    .clk(clk),
+    .rst_n(rst_n),
+    .set_timer(set_timer),
+    .clr_config_value(timer_clr),
+    .alert(alert)
+    );
+
+
 initial begin
     //$readmemb("./instr.txt", instr_mem);
-    $monitor("wb value is: %d",rb_wire);
+    $monitor("alert value is: %d",alert);
     clk = 0;
     rst_n = 0;
-<<<<<<< HEAD
-    alert = 0;
     # 20;
     rst_n = 1;
-    # 200;
-    alert = 1;
-    #10;
-    alert = 0;
-    #500
-=======
-    # 10;
-    rst_n = 1;
+    #500000000;
+	while (alert == 0) begin
+	end
     repeat (1000) @(posedge clk);
->>>>>>> 2be4ddf501602ac7075acd5eb57c62fd6b5fbdfb
     $display("Test done");
     $finish;
 

@@ -34,6 +34,7 @@ module IF (
 
 wire [31:0] pc_out, pc_in; // pc reg input and output
 wire [31:0] pci_out, pci_next; // pci reg output
+wire pci_save;
 
 // Next PC Logic
 Next_PC_Logic next_pc_logic(
@@ -55,14 +56,15 @@ Next_PC_Logic next_pc_logic(
 	.flush(flush),
 	.interrupt(interrupt),
 	.pc_out(pc_in),
-	.pci_out(pci_next)
+	.pci_out(pci_next),
+	.pci_save(pci_save)
 );
 
 // PCI Register
 dff_en pci_ff(
 	.clk(clk),
 	.rst_n(rst_n),
-	.en(interrupt),
+	.en(pci_save),
 	.d(pci_next),
 	.q(pci_out)
 );

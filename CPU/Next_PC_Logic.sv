@@ -30,7 +30,8 @@ module Next_PC_Logic(
 	
 	// next pc value
 	output reg [31:0] pc_out,
-	output reg [31:0] pci_out
+	output reg [31:0] pci_out,
+	output pci_save
 	
 );
 
@@ -88,9 +89,11 @@ next_state = S0;
 	endcase
 end
 
-always_latch begin
+assign pci_save = alert || branch_undo || pcr_take || branch_predict;
+		
+always_comb begin
 
-	pci_out = pci_out;
+	pci_out = pc_plus_4;
 	
 	case(state)
 	
@@ -149,7 +152,7 @@ interrupt = 1'b0;
 		S1: begin
 			if (counter == 3'b011) begin
 				interrupt = 1'b1;
-				pc_out = 32'd1024;
+				pc_out = 32'd4096;
 			end
 		end
 	endcase
